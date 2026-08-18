@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>+62 STORE — International Streetwear Distro</title>
+  
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
+
+  <style type="text/tailwindcss">
+    @import "tailwindcss";
+
+    @theme {
+      --font-sans: 'Inter', sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+    }
+
+    :root {
+      --ion-font-family: 'Inter', sans-serif;
+      --ion-background-color: #09090b;
+      --ion-text-color: #f4f4f5;
+      --ion-color-primary: #ffffff;
+      --ion-color-primary-rgb: 255,255,255;
+      --ion-color-primary-contrast: #000000;
+      --ion-color-primary-contrast-rgb: 0,0,0;
+      --ion-color-primary-shade: #e0e0e0;
+      --ion-color-primary-tint: #ffffff;
+      --ion-toolbar-background: #09090b;
+      --ion-toolbar-border-color: #27272a;
+      --ion-item-background: #09090b;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #09090b;
+      color: #f4f4f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .product-card {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+    }
+    .product-card:active {
+      transform: scale(0.98);
+    }
+
+    #detailImg {
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    ion-modal {
+      --background: #09090b;
+      --border-color: #27272a;
+    }
+
+    .btn-filter-active {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+    }
+
+    .btn-filter-inactive {
+      background-color: #18181b !important;
+      color: #a1a1aa !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-filter-inactive:hover {
+      color: #ffffff !important;
+      border-color: #52525b !important;
+    }
+
+    .btn-size-active {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+    }
+
+    .btn-size-inactive {
+      background-color: transparent !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: border-color 0.2s ease !important;
+    }
+    .btn-size-inactive:hover {
+      border-color: #71717a !important;
+    }
+
+    .btn-style-active {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 6px 14px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+    }
+
+    .btn-style-inactive {
+      background-color: transparent !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 6px 14px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      transition: border-color 0.2s ease !important;
+    }
+    .btn-style-inactive:hover {
+      border-color: #52525b !important;
+    }
+
+    .btn-cart-qty {
+      background-color: transparent !important;
+      color: #a1a1aa !important;
+      padding: 4px 10px !important;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border: none !important;
+    }
+    .btn-cart-qty:hover {
+      color: #ffffff !important;
+    }
+
+    .btn-primary-action {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      padding: 16px 24px !important;
+      font-weight: 700 !important;
+      font-size: 14px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      border: none !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-primary-action:hover {
+      background-color: #e4e4e7 !important;
+    }
+
+    .btn-wa-checkout {
+      background-color: #10b981 !important;
+      color: #000000 !important;
+      padding: 16px 24px !important;
+      font-weight: 700 !important;
+      font-size: 14px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      border: none !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-wa-checkout:hover {
+      background-color: #34d399 !important;
+    }
+
+    .ai-chip-btn {
+      background-color: #18181b !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 14px !important;
+      font-size: 11px !important;
+      font-family: monospace !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: all 0.2s ease !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+    .ai-chip-btn:hover {
+      background-color: #27272a !important;
+      color: #ffffff !important;
+      border-color: #71717a !important;
+    }
+
+    .btn-ai-mic {
+      background-color: #27272a !important;
+      color: #c084fc !important;
+      border: 1px solid #3f3f46 !important;
+      padding: 10px 14px !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-ai-mic:hover {
+      background-color: #3f3f46 !important;
+    }
+
+    .btn-ai-send {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 10px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-ai-send:hover {
+      background-color: #e4e4e7 !important;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .voice-pulse {
+      animation: pulse-ring 1.5s infinite ease-in-out;
+    }
+
+    #aiDrawer {
+      height: 100dvh;
+    }
+  </style>
+</head>
+<body>
+
+  <ion-app>
+    <ion-header class="ion-no-border border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
+      <ion-toolbar class="px-2">
+        <div class="flex items-center justify-between w-full max-w-7xl mx-auto py-2">
+          
+          <div class="flex items-center gap-2 cursor-pointer" onclick="scrollToTop()">
+            <span class="bg-white text-black font-extrabold px-2 py-0.5 text-lg tracking-tighter font-display uppercase">+62</span>
+            <span class="font-display font-bold tracking-widest text-lg text-white">STORE</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="toggleAiDrawer()" class="relative px-3.5 py-2 border border-purple-500/50 hover:border-purple-400 transition-colors bg-purple-950/30 text-purple-300 text-xs font-mono flex items-center gap-2 cursor-pointer rounded-none">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <ion-icon name="sparkles-outline" class="text-sm text-purple-300"></ion-icon>
+              <span class="hidden sm:inline">AI STORE ASSISTANT</span>
+            </button>
+
+            <button onclick="openCartModal()" class="relative p-2.5 border border-zinc-800 hover:border-zinc-600 transition-colors bg-zinc-900 cursor-pointer flex items-center justify-center rounded-none">
+              <ion-icon name="bag-handle-outline" class="text-xl text-zinc-100 block"></ion-icon>
+              <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
+                0
+              </span>
+            </button>
+          </div>
+
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding-bottom">
+      
+      <section class="border-b border-zinc-800 bg-zinc-950 py-12 px-4 mb-6">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex items-center gap-2 text-zinc-500 font-mono text-xs uppercase tracking-widest mb-2">
+            <span>// URBAN STREETWEAR ESSENTIALS</span>
+            <span>•</span>
+            <span class="text-emerald-400 flex items-center gap-1">
+              <ion-icon name="location-outline"></ion-icon> TASIKMALAYA
+            </span>
+          </div>
+          <h1 class="font-display text-4xl sm:text-6xl font-extrabold uppercase tracking-tight text-white mb-4">
+            LIMITED <span class="underline decoration-zinc-700 underline-offset-8">DROPS</span> +62
+          </h1>
+          <p class="text-zinc-400 max-w-xl text-sm sm:text-base leading-relaxed mb-4">
+            Koleksi eksklusif distro streetwear dengan material kualitas ekspor, desain flat kontemporer, & potongan oversized fit modern.
+          </p>
+          <div class="flex flex-wrap gap-3 text-xs font-mono">
+            <a href="https://maps.app.goo.gl/sTWRVRh8Hp62doHw7?g_st=ac" target="_blank" class="border border-zinc-800 hover:border-zinc-500 px-3.5 py-2 text-zinc-300 flex items-center gap-1.5">
+              <ion-icon name="map-outline"></ion-icon> Buka Lokasi Toko (Google Maps)
+            </a>
+            <a href="https://wa.me/62811111191209" target="_blank" class="border border-zinc-800 hover:border-emerald-500 px-3.5 py-2 text-emerald-400 flex items-center gap-1.5">
+              <ion-icon name="logo-whatsapp"></ion-icon> WA Admin: 0811-1119-1209
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div class="max-w-7xl mx-auto px-4 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          <div class="relative flex-1 max-w-md">
+            <ion-icon name="search-outline" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-lg"></ion-icon>
+            <input 
+              type="text" 
+              id="searchInput" 
+              oninput="handleSearch()"
+              placeholder="Cari artikel streetwear..." 
+              class="w-full bg-zinc-900 border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-white transition-colors"
+            >
+          </div>
+
+          <div id="filterContainer" class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+            <button onclick="filterByStyle('ALL')" class="btn-filter-active">
+              Semua Artikel
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="loadingState" class="flex flex-col items-center justify-center py-20">
+        <ion-spinner name="crescent" color="light"></ion-spinner>
+        <p class="text-zinc-500 text-xs font-mono tracking-widest mt-4">MEMUAT KATALOG...</p>
+      </div>
+
+      <div id="errorState" class="hidden text-center py-20 px-4">
+        <ion-icon name="alert-circle-outline" class="text-4xl text-red-500 mb-2"></ion-icon>
+        <h3 class="font-display font-bold text-lg">Gagal Memuat Produk</h3>
+        <p class="text-zinc-500 text-xs mt-1 mb-4">Pastikan koneksi internet kamu lancar.</p>
+        <button onclick="fetchProducts()" class="btn-filter-active">Coba Lagi</button>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4">
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+      </div>
+
+      <footer class="mt-20 border-t border-zinc-800 bg-zinc-950 py-10 px-4 text-center">
+        <div class="max-w-7xl mx-auto">
+          <span class="bg-white text-black font-extrabold px-2 py-0.5 text-base tracking-tighter font-display uppercase">+62</span>
+          <p class="text-zinc-500 text-xs font-mono mt-4">© 2026 PLUS62 STORE. ALL RIGHTS RESERVED.</p>
+        </div>
+      </footer>
+
+    </ion-content>
+  </ion-app>
+
+  <!-- WIDGET AI CHAT & VOICE ASSISTANT -->
+  <div id="aiDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-zinc-950 text-slate-100 shadow-2xl transition-transform duration-300 translate-x-full flex flex-col border-l border-zinc-800">
+    
+    <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/90 backdrop-blur-md">
+      <div class="flex items-center gap-3">
+        <div class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+        </div>
+        <div>
+          <h3 class="font-bold text-base tracking-wide text-white flex items-center gap-2 font-display">
+            +62 AI ASSISTANT
+            <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold text-[10px] px-2 py-0.5 rounded-none uppercase tracking-wider font-mono">
+              ElevenLabs + Llama
+            </span>
+          </h3>
+        </div>
+      </div>
+      <button onclick="closeAiDrawer()" class="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer border border-zinc-800 bg-zinc-900">
+        <ion-icon name="close-outline" class="text-xl block"></ion-icon>
+      </button>
+    </div>
+
+    <div class="p-3 bg-purple-950/30 border-b border-purple-900/40 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div id="voiceStatusDot" class="w-2.5 h-2.5 bg-zinc-600"></div>
+        <span id="voiceStatusText" class="text-xs font-mono text-purple-300">Voice Mode: Idle</span>
+      </div>
+      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all">
+        <ion-icon name="mic-outline" class="text-sm"></ion-icon>
+        <span>START VOICE</span>
+      </button>
+    </div>
+
+    <div id="aiChatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm scroll-smooth overscroll-contain flex flex-col">
+      
+      <div id="aiWelcomeState" class="my-auto flex flex-col items-center justify-center text-center p-4 space-y-3 font-sans">
+        <div class="w-12 h-12 bg-orange-600 flex items-center justify-center font-bold text-base text-white font-display border border-orange-500 shadow-lg">
+          +62
+        </div>
+        <div>
+          <h4 id="aiGreetingHeader" class="font-bold text-white font-display text-sm uppercase text-amber-400 mb-1"></h4>
+          <p id="aiGreetingBody" class="text-xs text-zinc-300 max-w-xs leading-relaxed"></p>
+        </div>
+        <p id="aiTimeContext" class="text-[10px] font-mono text-zinc-500 border-t border-zinc-800/80 pt-2 px-2"></p>
+      </div>
+
+    </div>
+
+    <div class="px-3 py-2 bg-zinc-950 border-t border-zinc-900 overflow-x-auto no-scrollbar">
+      <div class="flex items-center gap-2 min-w-max">
+        <button onclick="sendQuickPrompt('Dimana alamat toko offline +62 Store?')" class="ai-chip-btn">
+          📍 Alamat Toko
+        </button>
+
+        <button onclick="sendQuickPrompt('Berapa nomor WA Admin?')" class="ai-chip-btn">
+          💬 WA Admin
+        </button>
+
+        <button onclick="sendQuickPrompt('Tolong buka keranjang belanjaan gue')" class="ai-chip-btn">
+          🛒 Buka Keranjang
+        </button>
+
+        <button onclick="sendQuickPrompt('Rekomendasi kaos oversized terlaris')" class="ai-chip-btn">
+          🔥 Rekomendasi
+        </button>
+      </div>
+    </div>
+
+    <div id="aiInputContainer" class="p-3 bg-zinc-900/90 border-t border-zinc-800 backdrop-blur-md">
+      <form onsubmit="event.preventDefault(); sendAiMessage(false);" class="flex items-center gap-2">
+        <input 
+          type="text" 
+          id="aiInput" 
+          placeholder="Tanya produk, stok, atau lokasi..." 
+          onfocus="scrollToBottomChat()"
+          class="flex-1 bg-zinc-950 border border-zinc-800 text-zinc-100 placeholder-zinc-500 text-xs rounded-none px-3.5 py-3 focus:outline-none focus:border-amber-500 transition-all font-sans"
+        >
+        
+        <button 
+          type="button" 
+          onclick="toggleVoiceMode()" 
+          title="Bicara via Suara"
+          class="btn-ai-mic"
+        >
+          <ion-icon slot="icon-only" name="mic-outline" class="text-base"></ion-icon>
+        </button>
+
+        <button 
+          type="submit" 
+          class="btn-ai-send"
+        >
+          <ion-icon slot="icon-only" name="send" class="text-base"></ion-icon>
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+  <ion-modal id="productDetailModal">
+    <div class="h-full flex flex-col bg-zinc-950 text-zinc-100 overflow-y-auto">
+      
+      <div class="flex items-center justify-between p-4 border-b border-zinc-800 sticky top-0 bg-zinc-950/90 backdrop-blur z-10">
+        <span class="text-xs font-mono text-zinc-400">// DETAIL PRODUK</span>
+        <button onclick="closeProductModal()" class="p-1.5 rounded-none text-zinc-400 hover:text-white cursor-pointer bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+          <ion-icon name="close-outline" class="text-xl block"></ion-icon>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 flex-1 max-w-2xl mx-auto w-full">
+        <div class="bg-zinc-900 border border-zinc-800 mb-6 aspect-square relative overflow-hidden">
+          <img id="detailImg" src="" alt="" class="w-full h-full object-cover">
+          <div id="detailDiscountBadge" class="hidden absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider">
+            DISCOUNT
+          </div>
+        </div>
+
+        <h2 id="detailTitle" class="font-display text-2xl font-bold uppercase tracking-tight text-white mb-1"></h2>
+        
+        <div class="flex items-baseline gap-3 mb-4">
+          <span id="detailPrice" class="font-mono text-xl font-bold text-white"></span>
+          <span id="detailStock" class="text-xs text-zinc-400 font-mono"></span>
+        </div>
+
+        <div id="detailDescription" class="text-zinc-400 text-sm leading-relaxed mb-6 border-t border-b border-zinc-800/80 py-4"></div>
+
+        <div id="stylesContainer" class="mb-6 hidden">
+          <label class="block text-xs font-mono text-zinc-400 mb-2 uppercase">
+            Pilih Variasi Warna / Style: <span id="selectedStyleName" class="text-white font-bold ml-1"></span>
+          </label>
+          <div id="stylesList" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="mb-8">
+          <label class="block text-xs font-mono text-zinc-400 mb-2 uppercase">Pilih Ukuran (Size):</label>
+          <div id="sizeOptions" class="flex flex-wrap gap-2">
+            <button onclick="selectSize('S')" class="size-btn btn-size-inactive">S</button>
+            <button onclick="selectSize('M')" class="size-btn btn-size-active">M</button>
+            <button onclick="selectSize('L')" class="size-btn btn-size-inactive">L</button>
+            <button onclick="selectSize('XL')" class="size-btn btn-size-inactive">XL</button>
+            <button onclick="selectSize('XXL')" class="size-btn btn-size-inactive">XXL</button>
+          </div>
+        </div>
+
+        <button onclick="addToCartFromModal()" class="btn-primary-action font-display">
+          <ion-icon name="bag-add-outline" class="text-lg"></ion-icon>
+          + Tambahkan Ke Keranjang
+        </button>
+
+      </div>
+    </div>
+  </ion-modal>
+
+  <ion-modal id="cartModal">
+    <div class="h-full flex flex-col bg-zinc-950 text-zinc-100 overflow-y-auto">
+      
+      <div class="flex items-center justify-between p-4 border-b border-zinc-800 sticky top-0 bg-zinc-950/90 backdrop-blur z-10">
+        <div class="flex items-center gap-2">
+          <ion-icon name="bag-handle-outline" class="text-xl"></ion-icon>
+          <span class="font-display font-bold uppercase tracking-wider">KERANJANG BELANJA</span>
+        </div>
+        <button onclick="closeCartModal()" class="p-1.5 rounded-none text-zinc-400 hover:text-white cursor-pointer bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+          <ion-icon name="close-outline" class="text-xl block"></ion-icon>
+        </button>
+      </div>
+
+      <div class="p-4 flex-1 max-w-2xl mx-auto w-full">
+        <div id="cartEmptyState" class="text-center py-16 hidden">
+          <ion-icon name="cart-outline" class="text-5xl text-zinc-700 mb-3"></ion-icon>
+          <p class="text-zinc-400 font-mono text-sm mb-4">Keranjang kamu masih kosong.</p>
+          <button onclick="closeCartModal()" class="btn-filter-inactive inline-block">
+            Mulai Belanja
+          </button>
+        </div>
+
+        <div id="cartItemsList" class="space-y-4"></div>
+
+        <div id="checkoutSection" class="mt-8 border-t border-zinc-800 pt-6 hidden">
+          <h3 class="font-display font-bold text-sm uppercase tracking-wider text-zinc-300 mb-4">// DATA PENGIRIMAN</h3>
+          
+          <div class="space-y-3 mb-6">
+            <div>
+              <label class="block text-xs font-mono text-zinc-400 mb-1">Nama Lengkap *</label>
+              <input type="text" id="custName" placeholder="Contoh: Rian Anggara" class="w-full bg-zinc-900 border border-zinc-800 p-2.5 text-sm text-zinc-100 focus:outline-none focus:border-white">
+            </div>
+            <div>
+              <label class="block text-xs font-mono text-zinc-400 mb-1">Nomor WhatsApp *</label>
+              <input type="tel" id="custPhone" placeholder="Contoh: 08123456789" class="w-full bg-zinc-900 border border-zinc-800 p-2.5 text-sm text-zinc-100 focus:outline-none focus:border-white">
+            </div>
+            <div>
+              <label class="block text-xs font-mono text-zinc-400 mb-1">Alamat Lengkap *</label>
+              <textarea id="custAddress" rows="2" placeholder="Nama jalan, No. Rumah, Kecamatan, Kota" class="w-full bg-zinc-900 border border-zinc-800 p-2.5 text-sm text-zinc-100 focus:outline-none focus:border-white"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-mono text-zinc-400 mb-1">Catatan Tambahan (Opsional)</label>
+              <input type="text" id="custNotes" placeholder="Petunjuk khusus pengiriman" class="w-full bg-zinc-900 border border-zinc-800 p-2.5 text-sm text-zinc-100 focus:outline-none focus:border-white">
+            </div>
+          </div>
+
+          <div class="bg-zinc-900 border border-zinc-800 p-4 mb-6">
+            <div class="flex justify-between items-center text-xs font-mono text-zinc-400 mb-2">
+              <span>SUBTOTAL</span>
+              <span id="cartSubtotal" class="text-white font-bold">Rp 0</span>
+            </div>
+            <div class="flex justify-between items-center text-xs font-mono text-zinc-400 mb-2">
+              <span>ESTIMASI ONGKIR</span>
+              <span class="text-zinc-500">Dihitung saat WhatsApp</span>
+            </div>
+            <div class="flex justify-between items-center text-base font-mono font-bold text-white border-t border-zinc-800 pt-2 mt-2">
+              <span>TOTAL ESTIMASI</span>
+              <span id="cartTotal" class="text-white">Rp 0</span>
+            </div>
+          </div>
+
+          <button onclick="processWhatsAppCheckout()" class="btn-wa-checkout font-display">
+            <ion-icon name="logo-whatsapp" class="text-xl"></ion-icon>
+            Checkout via WhatsApp
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </ion-modal>
+
+  <ion-toast id="toast" duration="2000" position="bottom"></ion-toast>
+
+  <script>
+    const BASE_URL = 'https://j-static-webshop.pages.dev';
+    const API_URL = `${BASE_URL}/data_products.json`;
+    const CF_WORKER_AI_URL = 'https://plus62ai.warpzone.workers.dev/api/chat';
+    
+    const STORE_KNOWLEDGE = {
+      waNumber: '62811111191209',
+      waNumberFormatted: '0811-1119-1209',
+      locationName: 'J59R+37 Cibeuti, Tasikmalaya Regency, West Java',
+      locationAddress: 'Gn. Lingga Rt No.003/012, Cibeuti, Kec. Kawalu, Kab. Tasikmalaya, Jawa Barat 46182',
+      mapsUrl: 'https://maps.app.goo.gl/sTWRVRh8Hp62doHw7?g_st=ac'
+    };
+
+    let rawProducts = [];
+    let displayedProducts = [];
+    let selectedStyleFilter = 'ALL';
+    let currentSelectedProduct = null;
+    let selectedSize = 'M';
+    let selectedStyleOption = null;
+    let cart = [];
+    let isVoiceActive = false;
+    let recognition = null;
+    let currentAudioPlayer = null;
+
+    const productGrid = document.getElementById('productGrid');
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const filterContainer = document.getElementById('filterContainer');
+    const cartBadge = document.getElementById('cartBadge');
+    const aiDrawer = document.getElementById('aiDrawer');
+    
+    const productDetailModal = document.getElementById('productDetailModal');
+    const cartModal = document.getElementById('cartModal');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchProducts();
+      initSpeechRecognition();
+      setupDynamicGreeting();
+      setupViewportFix();
+    });
+
+    function setupDynamicGreeting() {
+      const now = new Date();
+      const hour = now.getHours();
+      
+      let timeGreeting = "Selamat Pagi";
+      if (hour >= 11 && hour < 15) timeGreeting = "Selamat Siang";
+      else if (hour >= 15 && hour < 18) timeGreeting = "Selamat Sore";
+      else if (hour >= 18 || hour < 4) timeGreeting = "Selamat Malam";
+
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+      const dayName = days[now.getDay()];
+      const dateNum = now.getDate();
+      const monthName = months[now.getMonth()];
+      const yearNum = now.getFullYear();
+      const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+      const greetingHeader = document.getElementById('aiGreetingHeader');
+      const greetingBody = document.getElementById('aiGreetingBody');
+      const timeContext = document.getElementById('aiTimeContext');
+
+      if (greetingHeader) greetingHeader.innerHTML = `// ${timeGreeting}, Bro! ⚡`;
+      if (greetingBody) greetingBody.innerHTML = `Selamat datang di **+62 STORE AI Assistant**.<br>Ada yang bisa gue bantu? Tanya stok artikel, cek lokasi distro di Tasikmalaya, atau minta masukin baju ke keranjang secara otomatis!`;
+      if (timeContext) timeContext.innerText = `🕒 ${dayName}, ${dateNum} ${monthName} ${yearNum} — ${timeStr} WIB`;
+    }
+
+    function setupViewportFix() {
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+          if (!aiDrawer.classList.contains('translate-x-full')) {
+            aiDrawer.style.height = `${window.visualViewport.height}px`;
+            scrollToBottomChat();
+          }
+        });
+        window.visualViewport.addEventListener('scroll', () => {
+          if (!aiDrawer.classList.contains('translate-x-full')) {
+            scrollToBottomChat();
+          }
+        });
+      }
+    }
+
+    function scrollToBottomChat() {
+      setTimeout(() => {
+        const chatContainer = document.getElementById('aiChatMessages');
+        if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 100);
+    }
+
+    function speakAiAudio(audioBase64) {
+      if (currentAudioPlayer) {
+        currentAudioPlayer.pause();
+        currentAudioPlayer = null;
+      }
+
+      if (audioBase64) {
+        try {
+          const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
+          currentAudioPlayer = audio;
+          audio.play().catch(e => {
+            console.warn("Autoplay audio diblokir browser:", e);
+          });
+        } catch (e) {
+          console.error("Gagal memutar audio:", e);
+        }
+      }
+    }
+
+    function sendQuickPrompt(promptText) {
+      const inputElem = document.getElementById('aiInput');
+      if (inputElem) {
+        inputElem.value = promptText;
+        // True = berasal dari klik quick chip, teks biasa (tidak bersuara)
+        sendAiMessage(false);
+      }
+    }
+
+    function getStyleName(styleItem) {
+      if (!styleItem) return '';
+      if (typeof styleItem === 'string') return styleItem;
+      return styleItem.title || styleItem.name || styleItem.color || styleItem.label || JSON.stringify(styleItem);
+    }
+
+    function getStyleColorHex(styleItem) {
+      if (typeof styleItem === 'object' && styleItem !== null) {
+        if (styleItem.color && styleItem.color.startsWith('#')) return styleItem.color;
+        if (styleItem.hex && styleItem.hex.startsWith('#')) return styleItem.hex;
+      }
+      return null;
+    }
+
+    function getStyleImagePath(styleItem, defaultProductImage) {
+      let imgPath = null;
+      if (typeof styleItem === 'object' && styleItem !== null) {
+        imgPath = styleItem.image_path || styleItem.image || styleItem.img || styleItem.picture;
+      }
+      if (!imgPath) imgPath = defaultProductImage;
+      if (!imgPath) return 'https://placehold.co/400x400/18181b/ffffff/png?text=%2B62+STORE';
+
+      return imgPath.startsWith('http') ? imgPath : `${BASE_URL}${imgPath}`;
+    }
+
+    async function fetchProducts() {
+      showLoading(true);
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error('Kesalahan jaringan');
+        
+        const data = await response.json();
+        rawProducts = data.product || [];
+        displayedProducts = [...rawProducts];
+        
+        renderFilterChips();
+        renderProducts(displayedProducts);
+        showLoading(false);
+      } catch (error) {
+        console.error('Gagal mengambil data:', error);
+        showLoading(false);
+        errorState.classList.remove('hidden');
+      }
+    }
+
+    function showLoading(isLoading) {
+      if (isLoading) {
+        loadingState.classList.remove('hidden');
+        errorState.classList.add('hidden');
+        productGrid.innerHTML = '';
+      } else {
+        loadingState.classList.add('hidden');
+      }
+    }
+
+    function renderFilterChips() {
+      const stylesSet = new Set();
+      rawProducts.forEach(p => {
+        if (p.styles && Array.isArray(p.styles)) {
+          p.styles.forEach(s => {
+            const name = getStyleName(s);
+            if (name) stylesSet.add(name);
+          });
+        }
+      });
+
+      const uniqueStyles = Array.from(stylesSet);
+      let html = `
+        <button onclick="filterByStyle('ALL')" class="filter-btn btn-filter-active">
+          Semua Artikel
+        </button>
+      `;
+
+      uniqueStyles.forEach(styleName => {
+        html += `
+          <button onclick="filterByStyle('${styleName}')" class="filter-btn btn-filter-inactive">
+            ${styleName}
+          </button>
+        `;
+      });
+
+      filterContainer.innerHTML = html;
+    }
+
+    function filterByStyle(styleName) {
+      selectedStyleFilter = styleName;
+      
+      const buttons = filterContainer.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => {
+        if ((styleName === 'ALL' && btn.innerText.includes('SEMUA')) || btn.innerText.trim().toUpperCase() === styleName.toUpperCase()) {
+          btn.className = "filter-btn btn-filter-active";
+        } else {
+          btn.className = "filter-btn btn-filter-inactive";
+        }
+      });
+
+      applyFilters();
+    }
+
+    function handleSearch() {
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      
+      displayedProducts = rawProducts.filter(p => {
+        const matchSearch = p.title.toLowerCase().includes(searchTerm) || p.slug.toLowerCase().includes(searchTerm);
+        
+        let matchStyle = true;
+        if (selectedStyleFilter !== 'ALL') {
+          matchStyle = p.styles && p.styles.some(s => getStyleName(s).toUpperCase() === selectedStyleFilter.toUpperCase());
+        }
+
+        return matchSearch && matchStyle;
+      });
+
+      renderProducts(displayedProducts);
+    }
+
+    function renderProducts(products) {
+      if (products.length === 0) {
+        productGrid.innerHTML = `
+          <div class="col-span-full text-center py-12 text-zinc-500 font-mono text-sm">
+            TIDAK ADA PRODUK DITEMUKAN.
+          </div>
+        `;
+        return;
+      }
+
+      productGrid.innerHTML = products.map(product => {
+        const fullImageUrl = product.image.startsWith('http') ? product.image : `${BASE_URL}${product.image}`;
+        const formattedPrice = formatRupiah(product.price);
+        const hasDiscount = product.discount && product.discount !== "Tidak Ada";
+
+        return `
+          <div onclick="openProductDetail('${product.slug}')" class="product-card bg-zinc-950 border border-zinc-800 p-2 sm:p-3 cursor-pointer group hover:border-zinc-500 flex flex-col justify-between">
+            <div>
+              <div class="bg-zinc-900 aspect-square overflow-hidden relative mb-3">
+                <img 
+                  src="${fullImageUrl}" 
+                  alt="${product.title}"
+                  loading="lazy"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onerror="this.src='https://placehold.co/400x400/18181b/ffffff/png?text=%2B62+STORE'"
+                />
+                ${hasDiscount ? `
+                  <span class="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
+                    ${product.discount}
+                  </span>
+                ` : ''}
+              </div>
+
+              <h3 class="font-display text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-100 group-hover:text-white line-clamp-1 mb-1">
+                ${product.title}
+              </h3>
+            </div>
+
+            <div class="pt-2 border-t border-zinc-900 flex justify-between items-center mt-2">
+              <span class="font-mono text-xs sm:text-sm font-semibold text-white">
+                Rp ${formattedPrice}
+              </span>
+              <span class="text-[10px] font-mono text-zinc-500 uppercase">
+                ${product.stock || 'READY'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function formatRupiah(val) {
+      if (!val) return '0';
+      let numStr = val.toString().replace(/[^0-9]/g, '');
+      if (!numStr) return val;
+      let num = parseInt(numStr, 10);
+      return num.toLocaleString('id-ID');
+    }
+
+    function parseNumericPrice(val) {
+      if (!val) return 0;
+      let numStr = val.toString().replace(/[^0-9]/g, '');
+      return parseInt(numStr, 10) || 0;
+    }
+
+    function openProductDetail(slug) {
+      const product = rawProducts.find(p => p.slug === slug);
+      if (!product) return;
+
+      currentSelectedProduct = product;
+      selectedSize = 'M';
+      selectedStyleOption = (product.styles && product.styles.length > 0) ? product.styles[0] : null;
+
+      document.getElementById('detailTitle').innerText = product.title;
+      document.getElementById('detailPrice').innerText = `Rp ${formatRupiah(product.price)}`;
+      document.getElementById('detailStock').innerText = `STATUS: ${product.stock || 'TERSEDIA'}`;
+      document.getElementById('detailDescription').innerText = product.description || 'Artikel koleksi terbatas dari +62 Store. Dibuat dengan material cotton combed premium pilihan untuk kenyamanan maksimal sepanjang hari.';
+
+      const discountBadge = document.getElementById('detailDiscountBadge');
+      if (product.discount && product.discount !== 'Tidak Ada') {
+        discountBadge.innerText = product.discount;
+        discountBadge.classList.remove('hidden');
+      } else {
+        discountBadge.classList.add('hidden');
+      }
+
+      const stylesContainer = document.getElementById('stylesContainer');
+      const stylesList = document.getElementById('stylesList');
+
+      if (product.styles && product.styles.length > 0) {
+        stylesContainer.classList.remove('hidden');
+        stylesList.innerHTML = product.styles.map((styleObj, index) => {
+          const styleTitle = getStyleName(styleObj);
+          const hexColor = getStyleColorHex(styleObj);
+          const isSelected = index === 0;
+
+          return `
+            <button 
+              onclick="selectStyleOption(${index})" 
+              class="style-option-btn ${isSelected ? 'btn-style-active' : 'btn-style-inactive'}"
+            >
+              ${hexColor ? `<span class="w-3 h-3 rounded-full border border-zinc-700 inline-block" style="background-color: ${hexColor}"></span>` : ''}
+              <span>${styleTitle}</span>
+            </button>
+          `;
+        }).join('');
+
+        selectStyleOption(0);
+      } else {
+        stylesContainer.classList.add('hidden');
+        const fullImageUrl = product.image.startsWith('http') ? product.image : `${BASE_URL}${product.image}`;
+        document.getElementById('detailImg').src = fullImageUrl;
+      }
+
+      selectSize('M');
+      productDetailModal.present();
+    }
+
+    function closeProductModal() {
+      productDetailModal.dismiss();
+    }
+
+    function selectSize(size) {
+      selectedSize = size;
+      const buttons = document.querySelectorAll('.size-btn');
+      buttons.forEach(btn => {
+        if (btn.innerText === size) {
+          btn.className = "size-btn btn-size-active";
+        } else {
+          btn.className = "size-btn btn-size-inactive";
+        }
+      });
+    }
+
+    function selectStyleOption(index) {
+      if (!currentSelectedProduct || !currentSelectedProduct.styles) return;
+      selectedStyleOption = currentSelectedProduct.styles[index];
+
+      const selectedStyleNameElem = document.getElementById('selectedStyleName');
+      if (selectedStyleNameElem) {
+        selectedStyleNameElem.innerText = getStyleName(selectedStyleOption);
+      }
+
+      const buttons = document.querySelectorAll('.style-option-btn');
+      buttons.forEach((btn, idx) => {
+        if (idx === index) {
+          btn.className = "style-option-btn btn-style-active";
+        } else {
+          btn.className = "style-option-btn btn-style-inactive";
+        }
+      });
+
+      const detailImg = document.getElementById('detailImg');
+      const newImgUrl = getStyleImagePath(selectedStyleOption, currentSelectedProduct.image);
+      
+      detailImg.style.opacity = '0.3';
+      setTimeout(() => {
+        detailImg.src = newImgUrl;
+        detailImg.style.opacity = '1';
+      }, 150);
+    }
+
+    function addToCartFromModal() {
+      if (!currentSelectedProduct) return;
+
+      const styleTitle = selectedStyleOption ? getStyleName(selectedStyleOption) : '-';
+      const itemImage = selectedStyleOption ? getStyleImagePath(selectedStyleOption, currentSelectedProduct.image) : (currentSelectedProduct.image.startsWith('http') ? currentSelectedProduct.image : `${BASE_URL}${currentSelectedProduct.image}`);
+      
+      const cartItemId = `${currentSelectedProduct.slug}-${selectedSize}-${styleTitle}`;
+
+      const existingItem = cart.find(item => item.cartItemId === cartItemId);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          cartItemId: cartItemId,
+          product: currentSelectedProduct,
+          size: selectedSize,
+          style: styleTitle,
+          image: itemImage,
+          quantity: 1,
+          unitPrice: parseNumericPrice(currentSelectedProduct.price)
+        });
+      }
+
+      updateCartBadge();
+      showToast(`Berhasil ditambahkan ke keranjang (${selectedSize})`);
+      closeProductModal();
+    }
+
+    function openCartModal() {
+      renderCartItems();
+      cartModal.present();
+    }
+
+    function closeCartModal() {
+      cartModal.dismiss();
+    }
+
+    function updateCartBadge() {
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      if (totalCount > 0) {
+        cartBadge.innerText = totalCount;
+        cartBadge.classList.remove('hidden');
+      } else {
+        cartBadge.classList.add('hidden');
+      }
+    }
+
+    function renderCartItems() {
+      const cartItemsList = document.getElementById('cartItemsList');
+      const cartEmptyState = document.getElementById('cartEmptyState');
+      const checkoutSection = document.getElementById('checkoutSection');
+
+      if (cart.length === 0) {
+        cartEmptyState.classList.remove('hidden');
+        cartItemsList.innerHTML = '';
+        checkoutSection.classList.add('hidden');
+        return;
+      }
+
+      cartEmptyState.classList.add('hidden');
+      checkoutSection.classList.remove('hidden');
+
+      let subtotal = 0;
+
+      cartItemsList.innerHTML = cart.map((item, index) => {
+        const itemTotal = item.unitPrice * item.quantity;
+        subtotal += itemTotal;
+
+        const displayImg = item.image || (item.product.image.startsWith('http') ? item.product.image : `${BASE_URL}${item.product.image}`);
+
+        return `
+          <div class="flex gap-3 bg-zinc-900 border border-zinc-800 p-3 items-center">
+            <img src="${displayImg}" alt="${item.product.title}" class="w-16 h-16 object-cover bg-zinc-950 border border-zinc-800 flex-shrink-0">
+            
+            <div class="flex-1 min-w-0">
+              <h4 class="font-display text-xs font-bold uppercase truncate text-white">${item.product.title}</h4>
+              <p class="text-[11px] font-mono text-zinc-400">
+                SIZE: <span class="text-white">${item.size}</span> | WARNA: <span class="text-white">${item.style}</span>
+              </p>
+              <p class="text-xs font-mono font-bold text-white mt-1">
+                Rp ${item.unitPrice.toLocaleString('id-ID')}
+              </p>
+            </div>
+
+            <div class="flex items-center border border-zinc-800 bg-zinc-950">
+              <button onclick="updateQty(${index}, -1)" class="btn-cart-qty">-</button>
+              <span class="px-2 font-mono text-xs font-bold">${item.quantity}</span>
+              <button onclick="updateQty(${index}, 1)" class="btn-cart-qty">+</button>
+            </div>
+
+            <button onclick="removeFromCart(${index})" class="text-zinc-500 hover:text-red-500 p-1 cursor-pointer border-none bg-transparent flex items-center justify-center">
+              <ion-icon name="trash-outline" class="text-lg block"></ion-icon>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('cartSubtotal').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+      document.getElementById('cartTotal').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+    }
+
+    function updateQty(index, change) {
+      if (cart[index]) {
+        cart[index].quantity += change;
+        if (cart[index].quantity <= 0) {
+          cart.splice(index, 1);
+        }
+      }
+      updateCartBadge();
+      renderCartItems();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartBadge();
+      renderCartItems();
+      showToast('Item telah dihapus dari keranjang');
+    }
+
+    function processWhatsAppCheckout() {
+      if (cart.length === 0) return;
+
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const notes = document.getElementById('custNotes').value.trim();
+
+      if (!name || !phone || !address) {
+        showToast('Mohon lengkapi Nama, WhatsApp & Alamat!');
+        return;
+      }
+
+      let subtotal = 0;
+      let itemsListText = '';
+
+      cart.forEach((item, i) => {
+        const itemTotal = item.unitPrice * item.quantity;
+        subtotal += itemTotal;
+        itemsListText += `${i + 1}. *${item.product.title}*\n`;
+        itemsListText += `   • Size: ${item.size} | Warna: ${item.style}\n`;
+        itemsListText += `   • Qty: ${item.quantity} x Rp ${item.unitPrice.toLocaleString('id-ID')} = *Rp ${itemTotal.toLocaleString('id-ID')}*\n\n`;
+      });
+
+      const waMessage = 
+`*— PESANAN BARU [+62 STORE] —*
+
+*DATA PEMBELI:*
+• *Nama:* ${name}
+• *No. HP/WA:* ${phone}
+• *Alamat:* ${address}
+${notes ? `• *Catatan:* ${notes}\n` : ''}
+*RINCIAN PESANAN:*
+${itemsListText}
+----------------------------------
+*TOTAL ESTIMASI:* *Rp ${subtotal.toLocaleString('id-ID')}*
+----------------------------------
+
+Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersediaan stok & total ongkos kirim. Terima kasih!`;
+
+      const encodedMsg = encodeURIComponent(waMessage);
+      const waUrl = `https://wa.me/${STORE_KNOWLEDGE.waNumber}?text=${encodedMsg}`;
+
+      window.open(waUrl, '_blank');
+    }
+
+    function toggleAiDrawer() {
+      if (aiDrawer.classList.contains('translate-x-full')) {
+        aiDrawer.classList.remove('translate-x-full');
+        if (window.visualViewport) {
+          aiDrawer.style.height = `${window.visualViewport.height}px`;
+        }
+        scrollToBottomChat();
+      } else {
+        aiDrawer.classList.add('translate-x-full');
+      }
+    }
+
+    function closeAiDrawer() {
+      aiDrawer.classList.add('translate-x-full');
+    }
+
+    // Fungsi utama mengirim pesan: parameter `isVoice` bernilai true HANYA jika dari tombol mic
+    async function sendAiMessage(isVoice = false) {
+      const inputElem = document.getElementById('aiInput');
+      const text = inputElem.value.trim();
+      if (!text) return;
+    
+      appendChatMessage('user', text);
+      inputElem.value = '';
+      scrollToBottomChat();
+    
+      const typingId = appendChatMessage('ai', isVoice ? '⚡ *Mendengarkan & Merespons via Suara...*' : '⚡ *Mengetik...*');
+    
+      try {
+        const nowIso = new Date().toISOString();
+
+        const response = await fetch(CF_WORKER_AI_URL, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify({ 
+            message: text,
+            enableAudio: isVoice, // Hanya true jika user menggunakan mic
+            timestamp: nowIso
+          })
+        });
+    
+        if (!response.ok) throw new Error('Worker AI Error');
+    
+        const data = await response.json();
+        const replyText = data.reply || 'Maaf bro, AI tidak memberikan respon.';
+    
+        updateChatMessage(typingId, replyText);
+
+        // Suara ElevenLabs HANYA diputar jika permintaan berasal dari suara (isVoice = true)
+        if (isVoice && data.audio) {
+          speakAiAudio(data.audio);
+        }
+    
+        if (data.action === 'OPEN_CART') {
+          openCartModal();
+          showToast('Keranjang dibuka oleh AI Assistant');
+        } else if (data.action === 'ADD_TO_CART' && data.payload) {
+          const foundProduct = rawProducts.find(p => p.slug === data.payload.productSlug);
+          
+          if (foundProduct) {
+            currentSelectedProduct = foundProduct;
+            selectedSize = data.payload.size || 'M';
+            
+            if (data.payload.style && foundProduct.styles) {
+              const styleIdx = foundProduct.styles.findIndex(s => getStyleName(s).toLowerCase() === data.payload.style.toLowerCase());
+              selectedStyleOption = styleIdx !== -1 ? foundProduct.styles[styleIdx] : foundProduct.styles[0];
+            } else {
+              selectedStyleOption = (foundProduct.styles && foundProduct.styles.length > 0) ? foundProduct.styles[0] : null;
+            }
+    
+            addToCartFromModal();
+          }
+        } else if (data.action === 'OPEN_MAPS') {
+          window.open(STORE_KNOWLEDGE.mapsUrl, '_blank');
+        } else if (data.action === 'CONTACT_WA') {
+          window.open(`https://wa.me/${STORE_KNOWLEDGE.waNumber}`, '_blank');
+        }
+    
+      } catch (err) {
+        console.error('AI Error:', err);
+        const fallbackReply = processAiIntentAndActions(text);
+        updateChatMessage(typingId, fallbackReply);
+      }
+    }
+
+    function appendChatMessage(sender, text) {
+      const welcomeElem = document.getElementById('aiWelcomeState');
+      if (welcomeElem) welcomeElem.classList.add('hidden');
+
+      const chatContainer = document.getElementById('aiChatMessages');
+      const msgId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
+
+      const isUser = sender === 'user';
+      const msgHtml = `
+        <div id="${msgId}" class="flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} font-sans">
+          ${!isUser ? `
+            <div class="w-7 h-7 bg-orange-600 flex items-center justify-center font-bold text-[10px] shrink-0 text-white font-display border border-orange-500">
+              +62
+            </div>
+          ` : ''}
+          <div class="p-3.5 max-w-[85%] leading-relaxed ${isUser ? 'bg-purple-950/80 border border-purple-800/80 text-purple-100' : 'bg-zinc-900 border border-zinc-800 text-zinc-200'} text-xs rounded-none shadow-none">
+            <p class="font-bold font-mono text-[9px] ${isUser ? 'text-purple-400' : 'text-zinc-500'} uppercase mb-1">// ${isUser ? 'YOU' : '+62 AI ASSISTANT'}</p>
+            <div class="msg-body">${text}</div>
+          </div>
+        </div>
+      `;
+
+      chatContainer.insertAdjacentHTML('beforeend', msgHtml);
+      scrollToBottomChat();
+      return msgId;
+    }
+
+    function updateChatMessage(msgId, newText) {
+      const msgElem = document.getElementById(msgId);
+      if (msgElem) {
+        const textContainer = msgElem.querySelector('.msg-body');
+        if (textContainer) textContainer.innerHTML = newText;
+        scrollToBottomChat();
+      }
+    }
+
+    function processAiIntentAndActions(userQuery) {
+      const lower = userQuery.toLowerCase();
+
+      if (lower.includes('buka keranjang') || lower.includes('lihat keranjang') || lower.includes('open cart')) {
+        openCartModal();
+        return `✅ **Keranjang Belanja telah dibuka!** Kamu bisa langsung melengkapi data dan checkout via WhatsApp.`;
+      }
+
+      if (lower.includes('lokasi') || lower.includes('alamat') || lower.includes('maps') || lower.includes('dimana')) {
+        return `📍 **Lokasi Toko Offline +62 Store:**<br>
+        ${STORE_KNOWLEDGE.locationName}<br>
+        <span class="text-zinc-400 text-[11px]">${STORE_KNOWLEDGE.locationAddress}</span><br><br>
+        👉 <a href="${STORE_KNOWLEDGE.mapsUrl}" target="_blank" class="text-emerald-400 underline font-mono">Klik di sini untuk Buka Google Maps</a>`;
+      }
+
+      if (lower.includes('wa') || lower.includes('whatsapp') || lower.includes('admin') || lower.includes('kontak')) {
+        return `📱 **WhatsApp Admin Resmi +62 Store:**<br>
+        *${STORE_KNOWLEDGE.waNumberFormatted}* (+${STORE_KNOWLEDGE.waNumber})<br><br>
+        👉 <a href="https://wa.me/${STORE_KNOWLEDGE.waNumber}" target="_blank" class="text-emerald-400 underline font-mono">Klik untuk Chat WA Admin Langsung</a>`;
+      }
+
+      return `Hatur nuhun tos tumanya! Gue bisa bantuin kamu cek lokasi toko di Tasikmalaya, kontak WA Admin, rekomendasi baju, atau masukin barang ke keranjang secara otomatis!`;
+    }
+
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'id-ID';
+        recognition.continuous = false;
+
+        recognition.onstart = () => {
+          isVoiceActive = true;
+          document.getElementById('voiceStatusDot').className = "w-2.5 h-2.5 bg-emerald-400 voice-pulse";
+          document.getElementById('voiceStatusText').innerText = "Voice Mode: Mendengarkan...";
+          document.getElementById('toggleVoiceBtn').className = "px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
+          document.getElementById('toggleVoiceBtn').innerHTML = `<ion-icon name="stop-circle-outline" class="text-sm"></ion-icon> STOP VOICE`;
+        };
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          const inputElem = document.getElementById('aiInput');
+          if (inputElem) {
+            inputElem.value = transcript;
+            // Kirim pesan dengan parameter true (isVoice = true) agar AI merespons dengan suara
+            sendAiMessage(true);
+          }
+        };
+
+        recognition.onend = () => {
+          isVoiceActive = false;
+          document.getElementById('voiceStatusDot').className = "w-2.5 h-2.5 bg-zinc-600";
+          document.getElementById('voiceStatusText').innerText = "Voice Mode: Idle";
+          document.getElementById('toggleVoiceBtn').className = "px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
+          document.getElementById('toggleVoiceBtn').innerHTML = `<ion-icon name="mic-outline" class="text-sm"></ion-icon> START VOICE`;
+        };
+      }
+    }
+
+    function toggleVoiceMode() {
+      if (!recognition) {
+        showToast('Browser Anda belum mendukung Speech Recognition!');
+        return;
+      }
+
+      if (isVoiceActive) {
+        recognition.stop();
+      } else {
+        if (aiDrawer.classList.contains('translate-x-full')) {
+          toggleAiDrawer();
+        }
+        recognition.start();
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.message = msg;
+      toast.present();
+    }
+
+    function scrollToTop() {
+      const content = document.querySelector('ion-content');
+      if (content) content.scrollToTop(500);
+    }
+  </script>
+</body>
+</html>
+
