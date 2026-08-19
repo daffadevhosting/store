@@ -12,12 +12,19 @@ International Streetwear Distro dengan AI Assistant berbasis Llama 3.3 70B + Ele
 ✨ Fitur Utama
 
 Fitur Deskripsi
+
 🤖 AI Assistant Chatbot pintar berbasis Llama 3.3 70B dengan konteks toko
+
 🎤 Voice Mode Input suara & output audio natural menggunakan ElevenLabs
+
 🛒 Smart Cart Tambah produk ke keranjang via chat atau antarmuka visual
+
 📸 Product Preview Tampilkan gambar produk sesuai warna yang dipilih
+
 📍 Store Locator Informasi alamat & link Google Maps toko offline
+
 💬 WhatsApp Checkout Checkout langsung via WhatsApp dengan format otomatis
+
 🎨 Real-time Catalog Data produk diambil real-time dari JSON statis
 
 ---
@@ -62,23 +69,23 @@ Fitur Deskripsi
 
 Frontend
 
-· Ionic Framework — Komponen UI mobile-first
-· Tailwind CSS — Styling cepat & responsif
-· IonIcons — Icon set modern
-· Web Speech API — Speech-to-Text fallback
-· Vanilla JavaScript — Tanpa framework tambahan
+- Ionic Framework — Komponen UI mobile-first
+- Tailwind CSS — Styling cepat & responsif
+- IonIcons — Icon set modern
+- Web Speech API — Speech-to-Text fallback
+- Vanilla JavaScript — Tanpa framework tambahan
 
 Backend
 
-· Cloudflare Workers — Serverless edge computing
-· Llama 3.3 70B — Model AI (via Cloudflare AI)
-· ElevenLabs API — Text-to-Speech v2 Multi-language
-· Cloudflare Pages — Hosting static assets
+- Cloudflare Workers — Serverless edge computing
+- Llama 3.3 70B — Model AI (via Cloudflare AI)
+- ElevenLabs API — Text-to-Speech v2 Multi-language
+- Cloudflare Pages — Hosting static assets
 
 Integrasi
 
-· WhatsApp API — Checkout via chat
-· Google Maps — Lokasi toko offline
+- WhatsApp API — Checkout via chat
+- Google Maps — Lokasi toko offline
 
 ---
 
@@ -237,27 +244,27 @@ Checkout WA Format pesan sesuai & buka WhatsApp
 
 1. ElevenLabs TTS tidak bersuara
 
-· Cek environment variables di Cloudflare Worker
-· Pastikan API key masih aktif
-· Cek console worker untuk error log
+- Cek environment variables di Cloudflare Worker
+- Pastikan API key masih aktif
+- Cek console worker untuk error log
 
 2. Voice Mode tidak jalan
 
-· Pastikan browser support Web Speech API
-· Ijinkan akses mikrofon
-· Coba di Chrome/Edge (Safari limited support)
+- Pastikan browser support Web Speech API
+- Ijinkan akses mikrofon
+- Coba di Chrome/Edge (Safari limited support)
 
 3. Gambar produk tidak tampil
 
-· Cek URL data_products.json bisa diakses
-· Pastikan path gambar benar (relatif/absolut)
-· Cek CORS headers di response
+- Cek URL data_products.json bisa diakses
+- Pastikan path gambar benar (relatif/absolut)
+- Cek CORS headers di response
 
 4. AI tidak merespon
 
-· Cek koneksi internet
-· Cek Cloudflare Worker status
-· Cek console untuk error detail
+- Cek koneksi internet
+- Cek Cloudflare Worker status
+- Cek console untuk error detail
 
 ---
 
@@ -265,24 +272,24 @@ Checkout WA Format pesan sesuai & buka WhatsApp
 
 Worker
 
-· Caching: Gunakan ctx.waitUntil() untuk async tasks
-· Token Optimization: Kirim maksimal 10 history terakhir
-· Edge Computing: Response time < 500ms (tanpa TTS)
+- Caching: Gunakan ctx.waitUntil() untuk async tasks
+- Token Optimization: Kirim maksimal 10 history terakhir
+- Edge Computing: Response time < 500ms (tanpa TTS)
 
 Client
 
-· Lazy Loading: Gambar produk dengan loading="lazy"
-· Virtual Scroll: Chat auto-scroll dengan scrollIntoView
-· Image Optimization: WebP support jika tersedia
+- Lazy Loading: Gambar produk dengan loading="lazy"
+- Virtual Scroll: Chat auto-scroll dengan scrollIntoView
+- Image Optimization: WebP support jika tersedia
 
 ---
 
 🔒 Security
 
-· CORS headers terbatas untuk origin yang diizinkan
-· API key disimpan di environment variables (tidak terekspos)
-· Input sanitasi di worker sebelum diproses AI
-· Rate limiting di Worker (opsional)
+- CORS headers terbatas untuk origin yang diizinkan
+- API key disimpan di environment variables (tidak terekspos)
+- Input sanitasi di worker sebelum diproses AI
+- Rate limiting di Worker (opsional)
 
 ---
 
@@ -319,18 +326,18 @@ Distributed under MIT License. See LICENSE for more information.
 
 +62 STORE
 
-· 📍 Alamat: J59R+37 Cibeuti, Tasikmalaya Regency, West Java
-· 📱 WA: 0811-1119-1209
-· 🗺️ Google Maps
+- 📍 Alamat: J59R+37 Cibeuti, Tasikmalaya Regency, West Java
+- 📱 WA: 0811-1119-1209
+- 🗺️ Google Maps
 
 ---
 
 🙏 Credits
 
-· AI Model: Meta Llama 3.3 70B via Cloudflare AI
-· TTS: ElevenLabs (eleven_multilingual_v2)
-· Framework: Ionic & Tailwind CSS
-· Hosting: Cloudflare Workers & Pages
+- AI Model: Meta Llama 3.3 70B via Cloudflare AI
+- TTS: ElevenLabs (eleven_multilingual_v2)
+- Framework: Ionic & Tailwind CSS
+- Hosting: Cloudflare Workers & Pages
 
 ---
 
