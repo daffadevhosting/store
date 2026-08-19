@@ -420,7 +420,7 @@
           <h3 class="font-bold text-base tracking-wide text-white flex items-center gap-2 font-display">
             +62 ASSISTANT
             <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold text-[10px] px-2 py-0.5 rounded-none uppercase tracking-wider font-mono">
-              11Labs + Llama
+              11Labs v2 + Llama
             </span>
           </h3>
         </div>
@@ -653,7 +653,7 @@
     let selectedSize = 'M';
     let selectedStyleOption = null;
     let cart = [];
-    let chatHistory = []; // Array Penyimpanan Memori Percakapan per Sesi Chat
+    let chatHistory = [];
     let isVoiceActive = false;
     let recognition = null;
     let currentAudioPlayer = null;
@@ -737,11 +737,27 @@
           currentAudioPlayer = audio;
           audio.play().catch(e => {
             console.warn("Autoplay audio diblokir browser:", e);
+            // Fallback ke TTS bawaan jika audio gagal diputar
+            speakTextFallback('Maaf, suara dari ElevenLabs gagal diputar.');
           });
         } catch (e) {
           console.error("Gagal memutar audio:", e);
+          speakTextFallback('Maaf, terjadi kesalahan saat memutar suara.');
         }
       }
+    }
+
+    // Fallback TTS menggunakan Web Speech API
+    function speakTextFallback(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'id-ID';
+      utterance.rate = 0.9;
+      const voices = window.speechSynthesis.getVoices();
+      const indoVoice = voices.find(v => v.lang.startsWith('id'));
+      if (indoVoice) utterance.voice = indoVoice;
+      window.speechSynthesis.speak(utterance);
     }
 
     function sendQuickPrompt(promptText) {
@@ -1216,18 +1232,16 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       const inputElem = document.getElementById('aiInput');
       const text = inputElem.value.trim();
       if (!text) return;
-    
-      // 1. Tampilkan di UI & simpan di Chat History Client-side
+
       appendChatMessage('user', text);
       chatHistory.push({ role: 'user', content: text });
 
       inputElem.value = '';
       scrollToBottomChat();
-    
+
       const typingId = appendChatMessage('ai', isVoice ? '⚡ *Mendengarkan & Merespons via Suara...*' : '⚡ *Mengetik...*');
-    
+
       try {
-        // Kirim maksimal 10 riwayat percakapan terakhir untuk menghemat token
         const recentHistory = chatHistory.slice(-10);
 
         const response = await fetch(CF_WORKER_AI_URL, {
@@ -1236,26 +1250,30 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           body: JSON.stringify({ 
             message: text,
             enableAudio: isVoice,
-            cart: cart,               // Mengirim state keranjang
-            history: recentHistory     // Mengirim riwayat obrolan (Multi-turn Memory)
+            cart: cart,
+            history: recentHistory
           })
         });
-    
+
         if (!response.ok) throw new Error('Worker AI Error');
-    
+
         const data = await response.json();
         const replyText = data.reply || 'Maaf bro, AI tidak memberikan respon.';
-    
-        // Simpan respons AI ke Chat History
+
         chatHistory.push({ role: 'assistant', content: replyText });
 
         updateChatMessage(typingId, replyText);
 
-        if (isVoice && data.audio) {
-          speakAiAudio(data.audio);
+        // Voice output: prioritas audio dari ElevenLabs, fallback TTS bawaan
+        if (isVoice) {
+          if (data.audio) {
+            speakAiAudio(data.audio);
+          } else {
+            speakTextFallback(replyText);
+          }
         }
-    
-        // Penanganan Action AI
+
+        // Handle actions
         if (data.action === 'OPEN_CART') {
           openCartModal();
           showToast('Keranjang dibuka oleh AI Assistant');
@@ -1280,7 +1298,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
               const stObj = foundProduct.styles.find(s => getStyleName(s).toLowerCase() === data.payload.style.toLowerCase());
               if (stObj) imgToShow = getStyleImagePath(stObj, foundProduct.image);
             }
-            
             const imageHtml = `<div class="mt-2 border border-zinc-800 bg-zinc-950 p-1"><img src="${imgToShow}" alt="${foundProduct.title}" class="w-full aspect-square object-cover mb-1"><p class="text-[10px] font-mono text-zinc-400 text-center uppercase">// ${foundProduct.title} (${data.payload.style || 'Standard'})</p></div>`;
             const msgElem = document.getElementById(typingId);
             if (msgElem) {
@@ -1293,7 +1310,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
         } else if (data.action === 'CONTACT_WA') {
           window.open(`https://wa.me/${STORE_KNOWLEDGE.waNumber}`, '_blank');
         }
-    
+
       } catch (err) {
         console.error('AI Error:', err);
         updateChatMessage(typingId, 'Maaf bro, terjadi kendala saat memproses permintaan.');
@@ -1332,6 +1349,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       if (msgElem) {
         const textContainer = msgElem.querySelector('.msg-body');
         if (textContainer) {
+          // Simpan konten gambar jika ada
           const imgContainer = textContainer.querySelector('div');
           textContainer.innerHTML = newText;
           if (imgContainer) textContainer.appendChild(imgContainer);
@@ -1371,6 +1389,14 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           document.getElementById('toggleVoiceBtn').className = "px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
           document.getElementById('toggleVoiceBtn').innerHTML = `<ion-icon name="mic-outline" class="text-sm"></ion-icon> START VOICE`;
         };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          if (event.error !== 'aborted') {
+            showToast('Error: ' + event.error);
+            recognition.stop();
+          }
+        };
       }
     }
 
@@ -1382,10 +1408,12 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
 
       if (isVoiceActive) {
         recognition.stop();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
       } else {
         if (aiDrawer.classList.contains('translate-x-full')) {
           toggleAiDrawer();
         }
+        document.getElementById('aiInput').value = '';
         recognition.start();
       }
     }
