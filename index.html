@@ -418,9 +418,9 @@
         </div>
         <div>
           <h3 class="font-bold text-base tracking-wide text-white flex items-center gap-2 font-display">
-            +62 AI ASSISTANT
+            +62 ASSISTANT
             <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold text-[10px] px-2 py-0.5 rounded-none uppercase tracking-wider font-mono">
-              ElevenLabs + Llama
+              11Labs + Llama
             </span>
           </h3>
         </div>
@@ -435,7 +435,7 @@
         <div id="voiceStatusDot" class="w-2.5 h-2.5 bg-zinc-600"></div>
         <span id="voiceStatusText" class="text-xs font-mono text-purple-300">Voice Mode: Idle</span>
       </div>
-      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all">
+      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all">
         <ion-icon name="mic-outline" class="text-sm"></ion-icon>
         <span>START VOICE</span>
       </button>
@@ -653,6 +653,7 @@
     let selectedSize = 'M';
     let selectedStyleOption = null;
     let cart = [];
+    let chatHistory = []; // Array Penyimpanan Memori Percakapan per Sesi Chat
     let isVoiceActive = false;
     let recognition = null;
     let currentAudioPlayer = null;
@@ -697,7 +698,7 @@
       const timeContext = document.getElementById('aiTimeContext');
 
       if (greetingHeader) greetingHeader.innerHTML = `// ${timeGreeting}, Bro! ⚡`;
-      if (greetingBody) greetingBody.innerHTML = `Selamat datang di **+62 STORE AI Assistant**.<br>Ada yang bisa gue bantu? Tanya stok artikel, cek lokasi distro di Tasikmalaya, atau minta masukin baju ke keranjang secara otomatis!`;
+      if (greetingBody) greetingBody.innerHTML = `Selamat datang di <b>+62 STORE AI</b>.<br>Ada yang bisa gue bantu? Tanya stok artikel, cek lokasi distro di Tasikmalaya, atau minta masukin baju ke keranjang secara otomatis!`;
       if (timeContext) timeContext.innerText = `🕒 ${dayName}, ${dateNum} ${monthName} ${yearNum} — ${timeStr} WIB`;
     }
 
@@ -1216,20 +1217,27 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       const text = inputElem.value.trim();
       if (!text) return;
     
+      // 1. Tampilkan di UI & simpan di Chat History Client-side
       appendChatMessage('user', text);
+      chatHistory.push({ role: 'user', content: text });
+
       inputElem.value = '';
       scrollToBottomChat();
     
       const typingId = appendChatMessage('ai', isVoice ? '⚡ *Mendengarkan & Merespons via Suara...*' : '⚡ *Mengetik...*');
     
       try {
+        // Kirim maksimal 10 riwayat percakapan terakhir untuk menghemat token
+        const recentHistory = chatHistory.slice(-10);
+
         const response = await fetch(CF_WORKER_AI_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             message: text,
             enableAudio: isVoice,
-            cart: cart // Mengirim state keranjang ke AI agar AI mengetahui isi keranjang
+            cart: cart,               // Mengirim state keranjang
+            history: recentHistory     // Mengirim riwayat obrolan (Multi-turn Memory)
           })
         });
     
@@ -1238,6 +1246,9 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
         const data = await response.json();
         const replyText = data.reply || 'Maaf bro, AI tidak memberikan respon.';
     
+        // Simpan respons AI ke Chat History
+        chatHistory.push({ role: 'assistant', content: replyText });
+
         updateChatMessage(typingId, replyText);
 
         if (isVoice && data.audio) {
@@ -1262,7 +1273,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
             addToCartFromModal();
           }
         } else if (data.action === 'SHOW_PRODUCT_IMAGE' && data.payload) {
-          // AI menampilkan gambar produk sesuai warna di chat
           const foundProduct = rawProducts.find(p => p.slug === data.payload.productSlug);
           if (foundProduct) {
             let imgToShow = foundProduct.image;
@@ -1322,7 +1332,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       if (msgElem) {
         const textContainer = msgElem.querySelector('.msg-body');
         if (textContainer) {
-          // Pertahankan elemen gambar jika sudah ada di dalam msg-body
           const imgContainer = textContainer.querySelector('div');
           textContainer.innerHTML = newText;
           if (imgContainer) textContainer.appendChild(imgContainer);
@@ -1351,7 +1360,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           const inputElem = document.getElementById('aiInput');
           if (inputElem) {
             inputElem.value = transcript;
-            sendAiMessage(true); // True = menggunakan suara mic, AI membalas pakai suara ElevenLabs
+            sendAiMessage(true);
           }
         };
 
@@ -1394,4 +1403,3 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
   </script>
 </body>
 </html>
-
