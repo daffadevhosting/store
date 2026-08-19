@@ -296,12 +296,19 @@ Client
 🚧 Roadmap
 
 ☐ Multi-language support (Inggris, Sunda)
+
 ☐ Payment gateway integration
+
 ☐ Order tracking system
+
 ☐ User authentication
+
 ☐ Admin dashboard
+
 ☐ Mobile app (Ionic React Native)
+
 ☐ Real-time stock update
+
 ☐ Recommendation engine
 
 ---
