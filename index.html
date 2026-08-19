@@ -252,17 +252,12 @@
       border-color: #71717a !important;
     }
 
-    .toggle-voice {
-    padding: 2px 4px;
-    }
-    
     .btn-ai-mic {
       background-color: #27272a !important;
       color: #c084fc !important;
       border: 1px solid #3f3f46 !important;
       padding: 10px 14px !important;
       cursor: pointer !important;
-      font-weight: 700 !important;
       border-radius: 0px !important;
       display: flex !important;
       align-items: center !important;
@@ -425,7 +420,7 @@
           <h3 class="font-bold text-base tracking-wide text-white flex items-center gap-2 font-display">
             +62 AI ASSISTANT
             <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold text-[10px] px-2 py-0.5 rounded-none uppercase tracking-wider font-mono">
-              Llama
+              ElevenLabs + Llama
             </span>
           </h3>
         </div>
@@ -440,9 +435,9 @@
         <div id="voiceStatusDot" class="w-2.5 h-2.5 bg-zinc-600"></div>
         <span id="voiceStatusText" class="text-xs font-mono text-purple-300">Voice Mode: Idle</span>
       </div>
-      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="toggle-voice px-2 py-1 bg-purple-600 hover:bg-purple-500 tracking-wider cursor-pointer transition-all flex items-center gap-2">
-        <ion-icon color="success" name="mic-outline"></ion-icon>
-        <span class="text-white text-xs font-mono font-bold uppercase">START VOICE</span>
+      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all">
+        <ion-icon name="mic-outline" class="text-sm"></ion-icon>
+        <span>START VOICE</span>
       </button>
     </div>
 
@@ -475,8 +470,8 @@
           🛒 Buka Keranjang
         </button>
 
-        <button onclick="sendQuickPrompt('Rekomendasi kaos oversized terlaris')" class="ai-chip-btn">
-          🔥 Rekomendasi
+        <button onclick="sendQuickPrompt('Tampilkan gambar Gavin the Tiger')" class="ai-chip-btn">
+          🐅 Gavin the Tiger
         </button>
       </div>
     </div>
@@ -702,7 +697,7 @@
       const timeContext = document.getElementById('aiTimeContext');
 
       if (greetingHeader) greetingHeader.innerHTML = `// ${timeGreeting}, Bro! ⚡`;
-      if (greetingBody) greetingBody.innerHTML = `Selamat datang di <b>+62 STORE AI</b>.<br>Ada yang bisa gue bantu? Tanya stok artikel, cek lokasi distro di Tasikmalaya, atau minta masukin baju ke keranjang secara otomatis!`;
+      if (greetingBody) greetingBody.innerHTML = `Selamat datang di **+62 STORE AI Assistant**.<br>Ada yang bisa gue bantu? Tanya stok artikel, cek lokasi distro di Tasikmalaya, atau minta masukin baju ke keranjang secara otomatis!`;
       if (timeContext) timeContext.innerText = `🕒 ${dayName}, ${dateNum} ${monthName} ${yearNum} — ${timeStr} WIB`;
     }
 
@@ -752,7 +747,6 @@
       const inputElem = document.getElementById('aiInput');
       if (inputElem) {
         inputElem.value = promptText;
-        // True = berasal dari klik quick chip, teks biasa (tidak bersuara)
         sendAiMessage(false);
       }
     }
@@ -953,7 +947,7 @@
       document.getElementById('detailTitle').innerText = product.title;
       document.getElementById('detailPrice').innerText = `Rp ${formatRupiah(product.price)}`;
       document.getElementById('detailStock').innerText = `STATUS: ${product.stock || 'TERSEDIA'}`;
-      document.getElementById('detailDescription').innerText = product.description || 'Artikel koleksi terbatas dari +62 Store. Dibuat dengan material cotton combed premium pilihan untuk kenyamanan maksimal sepanjang hari.';
+      document.getElementById('detailDescription').innerText = product.description || 'Artikel koleksi terbatas dari +62 Store.';
 
       const discountBadge = document.getElementById('detailDiscountBadge');
       if (product.discount && product.discount !== 'Tidak Ada') {
@@ -1054,7 +1048,8 @@
       } else {
         cart.push({
           cartItemId: cartItemId,
-          product: currentSelectedProduct,
+          productTitle: currentSelectedProduct.title,
+          slug: currentSelectedProduct.slug,
           size: selectedSize,
           style: styleTitle,
           image: itemImage,
@@ -1108,14 +1103,12 @@
         const itemTotal = item.unitPrice * item.quantity;
         subtotal += itemTotal;
 
-        const displayImg = item.image || (item.product.image.startsWith('http') ? item.product.image : `${BASE_URL}${item.product.image}`);
-
         return `
           <div class="flex gap-3 bg-zinc-900 border border-zinc-800 p-3 items-center">
-            <img src="${displayImg}" alt="${item.product.title}" class="w-16 h-16 object-cover bg-zinc-950 border border-zinc-800 flex-shrink-0">
+            <img src="${item.image}" alt="${item.productTitle}" class="w-16 h-16 object-cover bg-zinc-950 border border-zinc-800 flex-shrink-0">
             
             <div class="flex-1 min-w-0">
-              <h4 class="font-display text-xs font-bold uppercase truncate text-white">${item.product.title}</h4>
+              <h4 class="font-display text-xs font-bold uppercase truncate text-white">${item.productTitle}</h4>
               <p class="text-[11px] font-mono text-zinc-400">
                 SIZE: <span class="text-white">${item.size}</span> | WARNA: <span class="text-white">${item.style}</span>
               </p>
@@ -1178,7 +1171,7 @@
       cart.forEach((item, i) => {
         const itemTotal = item.unitPrice * item.quantity;
         subtotal += itemTotal;
-        itemsListText += `${i + 1}. *${item.product.title}*\n`;
+        itemsListText += `${i + 1}. *${item.productTitle}*\n`;
         itemsListText += `   • Size: ${item.size} | Warna: ${item.style}\n`;
         itemsListText += `   • Qty: ${item.quantity} x Rp ${item.unitPrice.toLocaleString('id-ID')} = *Rp ${itemTotal.toLocaleString('id-ID')}*\n\n`;
       });
@@ -1197,12 +1190,9 @@ ${itemsListText}
 *TOTAL ESTIMASI:* *Rp ${subtotal.toLocaleString('id-ID')}*
 ----------------------------------
 
-Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersediaan stok & total ongkos kirim. Terima kasih!`;
+Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersediaan stok & ongkos kirim. Terima kasih!`;
 
-      const encodedMsg = encodeURIComponent(waMessage);
-      const waUrl = `https://wa.me/${STORE_KNOWLEDGE.waNumber}?text=${encodedMsg}`;
-
-      window.open(waUrl, '_blank');
+      window.open(`https://wa.me/${STORE_KNOWLEDGE.waNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
     }
 
     function toggleAiDrawer() {
@@ -1221,7 +1211,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       aiDrawer.classList.add('translate-x-full');
     }
 
-    // Fungsi utama mengirim pesan: parameter `isVoice` bernilai true HANYA jika dari tombol mic
     async function sendAiMessage(isVoice = false) {
       const inputElem = document.getElementById('aiInput');
       const text = inputElem.value.trim();
@@ -1234,17 +1223,13 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       const typingId = appendChatMessage('ai', isVoice ? '⚡ *Mendengarkan & Merespons via Suara...*' : '⚡ *Mengetik...*');
     
       try {
-        const nowIso = new Date().toISOString();
-
         const response = await fetch(CF_WORKER_AI_URL, {
           method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json' 
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             message: text,
-            enableAudio: isVoice, // Hanya true jika user menggunakan mic
-            timestamp: nowIso
+            enableAudio: isVoice,
+            cart: cart // Mengirim state keranjang ke AI agar AI mengetahui isi keranjang
           })
         });
     
@@ -1255,29 +1240,43 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
     
         updateChatMessage(typingId, replyText);
 
-        // Suara ElevenLabs HANYA diputar jika permintaan berasal dari suara (isVoice = true)
         if (isVoice && data.audio) {
           speakAiAudio(data.audio);
         }
     
+        // Penanganan Action AI
         if (data.action === 'OPEN_CART') {
           openCartModal();
           showToast('Keranjang dibuka oleh AI Assistant');
         } else if (data.action === 'ADD_TO_CART' && data.payload) {
           const foundProduct = rawProducts.find(p => p.slug === data.payload.productSlug);
-          
           if (foundProduct) {
             currentSelectedProduct = foundProduct;
             selectedSize = data.payload.size || 'M';
-            
             if (data.payload.style && foundProduct.styles) {
               const styleIdx = foundProduct.styles.findIndex(s => getStyleName(s).toLowerCase() === data.payload.style.toLowerCase());
               selectedStyleOption = styleIdx !== -1 ? foundProduct.styles[styleIdx] : foundProduct.styles[0];
             } else {
               selectedStyleOption = (foundProduct.styles && foundProduct.styles.length > 0) ? foundProduct.styles[0] : null;
             }
-    
             addToCartFromModal();
+          }
+        } else if (data.action === 'SHOW_PRODUCT_IMAGE' && data.payload) {
+          // AI menampilkan gambar produk sesuai warna di chat
+          const foundProduct = rawProducts.find(p => p.slug === data.payload.productSlug);
+          if (foundProduct) {
+            let imgToShow = foundProduct.image;
+            if (data.payload.style && foundProduct.styles) {
+              const stObj = foundProduct.styles.find(s => getStyleName(s).toLowerCase() === data.payload.style.toLowerCase());
+              if (stObj) imgToShow = getStyleImagePath(stObj, foundProduct.image);
+            }
+            
+            const imageHtml = `<div class="mt-2 border border-zinc-800 bg-zinc-950 p-1"><img src="${imgToShow}" alt="${foundProduct.title}" class="w-full aspect-square object-cover mb-1"><p class="text-[10px] font-mono text-zinc-400 text-center uppercase">// ${foundProduct.title} (${data.payload.style || 'Standard'})</p></div>`;
+            const msgElem = document.getElementById(typingId);
+            if (msgElem) {
+              msgElem.querySelector('.msg-body').insertAdjacentHTML('beforeend', imageHtml);
+              scrollToBottomChat();
+            }
           }
         } else if (data.action === 'OPEN_MAPS') {
           window.open(STORE_KNOWLEDGE.mapsUrl, '_blank');
@@ -1287,8 +1286,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
     
       } catch (err) {
         console.error('AI Error:', err);
-        const fallbackReply = processAiIntentAndActions(text);
-        updateChatMessage(typingId, fallbackReply);
+        updateChatMessage(typingId, 'Maaf bro, terjadi kendala saat memproses permintaan.');
       }
     }
 
@@ -1323,33 +1321,14 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       const msgElem = document.getElementById(msgId);
       if (msgElem) {
         const textContainer = msgElem.querySelector('.msg-body');
-        if (textContainer) textContainer.innerHTML = newText;
+        if (textContainer) {
+          // Pertahankan elemen gambar jika sudah ada di dalam msg-body
+          const imgContainer = textContainer.querySelector('div');
+          textContainer.innerHTML = newText;
+          if (imgContainer) textContainer.appendChild(imgContainer);
+        }
         scrollToBottomChat();
       }
-    }
-
-    function processAiIntentAndActions(userQuery) {
-      const lower = userQuery.toLowerCase();
-
-      if (lower.includes('buka keranjang') || lower.includes('lihat keranjang') || lower.includes('open cart')) {
-        openCartModal();
-        return `✅ **Keranjang Belanja telah dibuka!** Kamu bisa langsung melengkapi data dan checkout via WhatsApp.`;
-      }
-
-      if (lower.includes('lokasi') || lower.includes('alamat') || lower.includes('maps') || lower.includes('dimana')) {
-        return `📍 **Lokasi Toko Offline +62 Store:**<br>
-        ${STORE_KNOWLEDGE.locationName}<br>
-        <span class="text-zinc-400 text-[11px]">${STORE_KNOWLEDGE.locationAddress}</span><br><br>
-        👉 <a href="${STORE_KNOWLEDGE.mapsUrl}" target="_blank" class="text-emerald-400 underline font-mono">Klik di sini untuk Buka Google Maps</a>`;
-      }
-
-      if (lower.includes('wa') || lower.includes('whatsapp') || lower.includes('admin') || lower.includes('kontak')) {
-        return `📱 **WhatsApp Admin Resmi +62 Store:**<br>
-        *${STORE_KNOWLEDGE.waNumberFormatted}* (+${STORE_KNOWLEDGE.waNumber})<br><br>
-        👉 <a href="https://wa.me/${STORE_KNOWLEDGE.waNumber}" target="_blank" class="text-emerald-400 underline font-mono">Klik untuk Chat WA Admin Langsung</a>`;
-      }
-
-      return `Hatur nuhun tos tumanya! Gue bisa bantuin kamu cek lokasi toko di Tasikmalaya, kontak WA Admin, rekomendasi baju, atau masukin barang ke keranjang secara otomatis!`;
     }
 
     function initSpeechRecognition() {
@@ -1372,8 +1351,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           const inputElem = document.getElementById('aiInput');
           if (inputElem) {
             inputElem.value = transcript;
-            // Kirim pesan dengan parameter true (isVoice = true) agar AI merespons dengan suara
-            sendAiMessage(true);
+            sendAiMessage(true); // True = menggunakan suara mic, AI membalas pakai suara ElevenLabs
           }
         };
 
