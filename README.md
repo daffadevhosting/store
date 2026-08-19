@@ -125,10 +125,10 @@ CF_WORKER_AI_URL = https://plus62ai.warpzone.workers.dev/api/chat
 
 System Prompt berisi:
 
-· Knowledge base toko (WA, alamat, maps)
-· Katalog produk real-time
-· Aturan function calling
-· Konteks keranjang belanja
+- Knowledge base toko (WA, alamat, maps)
+- Katalog produk real-time
+- Aturan function calling
+- Konteks keranjang belanja
 
 Contoh Interaksi:
 
@@ -142,12 +142,12 @@ AI: [Menampilkan gambar Gavin the Tiger warna Hitam]
 
 2. Voice Mode
 
-· Input: Web Speech API (id-ID)
-· Output: ElevenLabs TTS dengan preprocessing:
-  · +62 → "plus enam dua"
-  · Nomor telepon → per-digit (pelan & jelas)
-  · XL → "eks el"
-  · WA → "W A"
+- Input: Web Speech API (id-ID)
+- Output: ElevenLabs TTS dengan preprocessing:
+  - +62 → "plus enam dua"
+  - Nomor telepon → per-digit (pelan & jelas)
+  - XL → "eks el"
+  - WA → "W A"
 
 3. Smart Cart
 
@@ -160,16 +160,16 @@ AI: "Sudah ditambahkan bro!" + Action ADD_TO_CART
 
 Checkout via WhatsApp:
 
-· Otomatis format pesan dengan detail pesanan
-· Data pembeli (nama, WA, alamat)
-· Rincian produk & total estimasi
+- Otomatis format pesan dengan detail pesanan
+- Data pembeli (nama, WA, alamat)
+- Rincian produk & total estimasi
 
 4. Product Gallery
 
-· Filter berdasarkan style/warna
-· Search produk
-· Detail produk (gambar, harga, stok, ukuran)
-· Pilihan variasi warna dengan preview gambar
+- Filter berdasarkan style/warna
+- Search produk
+- Detail produk (gambar, harga, stok, ukuran)
+- Pilihan variasi warna dengan preview gambar
 
 ---
 
@@ -227,14 +227,14 @@ Format JSON:
 
 Manual Test Cases
 
-Test Case Expected Result
-Chat tanpa voice AI merespon dengan teks
-Chat dengan voice AI merespon dengan suara
-Tanya WA Admin Dibaca per-digit pelan
-Tampilkan gambar produk AI tanya warna jika belum disebut
-Tampilkan gambar dengan warna spesifik Langsung tampilkan gambar
-Warna tidak tersedia Respon sopan dengan daftar warna tersedia
-Tambah ke keranjang Cart badge update & toast notifikasi
+- Test Case Expected Result
+- Chat tanpa voice AI merespon dengan teks
+- Chat dengan voice AI merespon dengan suara
+- Tanya WA Admin Dibaca per-digit pelan
+- Tampilkan gambar produk AI tanya warna jika belum disebut
+- Tampilkan gambar dengan warna spesifik Langsung tampilkan gambar
+- Warna tidak tersedia Respon sopan dengan daftar warna tersedia
+- Tambah ke keranjang Cart badge update & toast notifikasi
 Buka keranjang Modal keranjang muncul
 Checkout WA Format pesan sesuai & buka WhatsApp
 
