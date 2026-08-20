@@ -39,6 +39,338 @@
       --ion-toolbar-border-color: #27272a;
       --ion-item-background: #09090b;
     }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #09090b;
+      color: #f4f4f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .product-card {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+    }
+    .product-card:active {
+      transform: scale(0.98);
+    }
+
+    #detailImg {
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    ion-modal {
+      --background: #09090b;
+      --border-color: #27272a;
+    }
+
+    ion-modal#productDetailModal {
+      --width: 100%;
+      --height: 100%;
+      --max-height: 100%;
+      --border-radius: 0px;
+      margin: auto;
+    }
+
+    .drawer-btn {
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: all 0.2s ease !important;
+    }
+    .drawer-btn:hover {
+      color: #ffffff !important;
+      border-color: #52525b !important;
+    }
+
+    .voice-btn {
+      color: #d4d4d8 !important;
+      padding: 6px 12px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      transition: all 0.2s ease !important;
+    }
+    .voice-btn:hover {
+      background-color: #3f3f46 !important;
+      color: #ffffff !important;
+    }
+    .voice-btn:disabled {
+      background-color: #27272a !important;
+      color: #71717a !important;
+      cursor: not-allowed !important;
+    }
+    .voice-btn:disabled:hover {
+      background-color: #27272a !important;
+      color: #71717a !important;
+    }
+    .voice-btn:active {
+      transform: scale(0.98) !important;
+    }
+
+    .btn-filter-active {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+    }
+
+    .btn-filter-inactive {
+      background-color: #18181b !important;
+      color: #a1a1aa !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-filter-inactive:hover {
+      color: #ffffff !important;
+      border-color: #52525b !important;
+    }
+
+    .btn-size-active {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+    }
+
+    .btn-size-inactive {
+      background-color: transparent !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: border-color 0.2s ease !important;
+    }
+    .btn-size-inactive:hover {
+      border-color: #71717a !important;
+    }
+
+    .btn-style-active {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 6px 14px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+    }
+
+    .btn-style-inactive {
+      background-color: transparent !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 6px 14px !important;
+      font-size: 12px !important;
+      font-family: monospace !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      transition: border-color 0.2s ease !important;
+    }
+    .btn-style-inactive:hover {
+      border-color: #52525b !important;
+    }
+
+    .btn-cart-qty {
+      background-color: transparent !important;
+      color: #a1a1aa !important;
+      padding: 4px 10px !important;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border: none !important;
+    }
+    .btn-cart-qty:hover {
+      color: #ffffff !important;
+    }
+
+    .btn-primary-action {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      padding: 16px 24px !important;
+      font-weight: 700 !important;
+      font-size: 14px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      border: none !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-primary-action:hover {
+      background-color: #e4e4e7 !important;
+    }
+
+    .btn-wa-checkout {
+      background-color: #10b981 !important;
+      color: #000000 !important;
+      padding: 16px 24px !important;
+      font-weight: 700 !important;
+      font-size: 14px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      border: none !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-wa-checkout:hover {
+      background-color: #34d399 !important;
+    }
+
+    .ai-chip-btn {
+      background-color: #18181b !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 14px !important;
+      font-size: 11px !important;
+      font-family: monospace !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: all 0.2s ease !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+    .ai-chip-btn:hover {
+      background-color: #27272a !important;
+      color: #ffffff !important;
+      border-color: #71717a !important;
+    }
+
+    .btn-mic-ai {
+      border: 1px solid #3f3f46 !important;
+      padding: 10px 14px !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-mic-ai:hover {
+      background-color: #3f3f46 !important;
+    }
+
+    .btn-ai-send {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ffffff !important;
+      padding: 10px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background-color 0.2s ease !important;
+    }
+    .btn-ai-send:hover {
+      background-color: #e4e4e7 !important;
+    }
+
+    .btn-cart {
+      background-color: #18181b !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 10px 14px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-cart:hover {
+      background-color: #27272a !important;
+      color: #ffffff !important;
+      border-color: #71717a !important;
+    }
+    
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .voice-pulse {
+      animation: pulse-ring 1.5s infinite ease-in-out;
+    }
+
+    #aiDrawer {
+      height: 100dvh;
+    }
   </style>
 </head>
 <body>
@@ -139,83 +471,10 @@
         <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
       </div>
 
-      <!-- WIDGET FOOTER -->
-      <section class="mt-16 border-t border-zinc-800 bg-zinc-950/90 py-12 px-4">
-        <div class="wrapper max-w-7xl mx-auto">
-          <div class="grid1 widgetFooter section grid grid-cols-1 md:grid-cols-3 gap-6" id="tw_wFooter" name="Widget Footer">
-            
-            <!-- Widget 1: Alamat Kami -->
-            <div class="widget HTML bg-zinc-900/60 border border-zinc-800/80 p-5 rounded-none" data-version="1" id="HTML301">
-              <h3 itemprop="name" class="font-display font-bold text-sm uppercase tracking-wider text-white mb-3 flex items-center gap-2">
-                <ion-icon name="location-outline" class="text-emerald-400 text-lg"></ion-icon>
-                Alamat Kami
-              </h3>
-              <p></p>
-              <div class="widget-content text-zinc-400 text-xs leading-relaxed font-sans">
-                Jl. Gn. Lingga, Cibeuti, Rt.003/012 <br>
-                Kawalu - Tasikmalaya 46182. <br><br>
-                Lihat di <a href="https://maps.app.goo.gl/sTWRVRh8Hp62doHw7?g_st=ac" target="_blank" data-fancybox="" data-type="iframe" data-preload="true" data-width="640" data-height="480" class="text-emerald-400 hover:text-emerald-300 font-mono font-bold underline underline-offset-4 transition-colors">Google Maps</a>
-              </div>
-              <div class="clear"></div>
-            </div>
-
-            <!-- Widget 2: Pembayaran & Pengiriman -->
-            <div class="widget HTML bg-zinc-900/60 border border-zinc-800/80 p-5 rounded-none" data-version="1" id="HTML302">
-              <h3 itemprop="name" class="font-display font-bold text-sm uppercase tracking-wider text-white mb-3 flex items-center gap-2">
-                <ion-icon name="card-outline" class="text-amber-400 text-lg"></ion-icon>
-                Pembayaran &amp; Pengiriman
-              </h3>
-              <p></p>
-              <div class="widget-content">
-                <ul class="payShipIcon flex flex-wrap gap-2 p-0 m-0 list-none font-mono text-[11px]">
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">BCA</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">BNI</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">BRI</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">MANDIRI</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">XENDIT</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">GOSEND</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">GRABEXPRESS</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">JNE</li>
-                  <li class="bg-zinc-800 border border-zinc-700 px-2.5 py-1 text-zinc-200 font-bold">J&amp;T</li>
-                </ul>
-              </div>
-              <div class="clear"></div>
-            </div>
-
-            <!-- Widget 3: Hubungi Kami -->
-            <div class="widget HTML bg-zinc-900/60 border border-zinc-800/80 p-5 rounded-none" data-version="1" id="HTML303">
-              <h3 itemprop="name" class="font-display font-bold text-sm uppercase tracking-wider text-white mb-3 flex items-center gap-2">
-                <ion-icon name="call-outline" class="text-purple-400 text-lg"></ion-icon>
-                Hubungi Kami
-              </h3>
-              <p></p>
-              <div class="widget-content">
-                <div class="btnGroup flex flex-wrap gap-2 items-center">
-                  <a href="https://wa.me/62811111191209" target="_blank" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold px-3 py-1.5 transition-colors">
-                    <ion-icon name="logo-whatsapp" class="text-base"></ion-icon>
-                    <span>Whatsapp</span>
-                  </a>
-                  <a href="mailto:admin@plus62store.com" class="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-500 text-white font-mono text-xs font-bold px-3 py-1.5 transition-colors">
-                    <ion-icon name="mail-outline" class="text-base"></ion-icon>
-                    <span>E-mail</span>
-                  </a>
-                </div>
-                <br>
-                <small style="font-size:11px;" class="font-mono text-red-400 flex items-center gap-1">
-                  <ion-icon name="time-outline"></ion-icon>
-                  <span>* <b>Senin - Sabtu</b> ( 07:00 s/d 17:00 )</span>
-                </small>
-              </div>
-              <div class="clear"></div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
       <footer class="mt-20 border-t border-zinc-800 bg-zinc-950 py-10 px-4 text-center">
         <div class="max-w-7xl mx-auto">
           <span class="bg-white text-black font-extrabold px-2 py-0.5 text-base tracking-tighter font-display uppercase">+62</span>
+            <span class="font-display font-bold tracking-widest text-lg text-white">STORE</span>
           <p class="text-zinc-500 text-xs font-mono mt-4">© 2026 PLUS62 STORE. ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
@@ -332,10 +591,10 @@
         </button>
       </div>
 
-      <!-- DISPLAY PRODUCT MODAL RESPONSIVE (flex-col di HP, flex-row di Desktop) -->
+      <!-- DISPLAY PRODUCT MODAL RESPONSIVE -->
       <div class="display-product p-4 sm:p-6 md:p-8 flex-1 max-w-4xl mx-auto w-full flex flex-col md:flex-row gap-6 md:gap-8 items-start">
         
-        <!-- KOLOM GAMBAR (100% HP, 50% Desktop) -->
+        <!-- KOLOM GAMBAR -->
         <div class="w-full md:w-1/2 shrink-0">
           <div class="bg-zinc-900 border border-zinc-800 aspect-square relative overflow-hidden">
             <img id="detailImg" src="" alt="" class="w-full h-full object-cover">
@@ -345,7 +604,7 @@
           </div>
         </div>
 
-        <!-- KOLOM DETAIL PRODUK (100% HP, 50% Desktop) -->
+        <!-- KOLOM DETAIL PRODUK -->
         <div class="w-full md:w-1/2 flex flex-col h-full">
           <h2 id="detailTitle" class="font-display text-2xl font-bold uppercase tracking-tight text-white mb-1"></h2>
           
@@ -1153,7 +1412,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
             </div>
           ` : ''}
           <div class="p-3.5 max-w-[85%] leading-relaxed ${isUser ? 'bg-purple-950/80 border border-purple-800/80 text-purple-100' : 'bg-zinc-900 border border-zinc-800 text-zinc-200'} text-xs rounded-none shadow-none">
-            <p class="font-bold font-mono text-[9px] ${isUser ? 'text-purple-400' : 'text-zinc-500'} uppercase mb-1">// ${isUser ? 'YOU' : '+62 AI ASSISTANT'}</p>
+            <p class="font-bold font-mono text-[9px] ${isUser ? 'text-purple-400' : 'text-zinc-500'} uppercase mb-1">// ${isUser ? 'YOU' : '+62 AI'}</p>
             <div class="msg-body">${text}</div>
           </div>
         </div>
