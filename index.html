@@ -754,7 +754,7 @@
                 Rp ${formattedPrice}
               </span>
               <span class="text-[10px] font-mono text-zinc-500 uppercase">
-                ${product.stock || 'READY'}
+                ${product.stock || 'HABIS'}
               </span>
             </div>
           </div>
@@ -786,7 +786,7 @@
 
       document.getElementById('detailTitle').innerText = product.title;
       document.getElementById('detailPrice').innerText = `Rp ${formatRupiah(product.price)}`;
-      document.getElementById('detailStock').innerText = `STATUS: ${product.stock || 'TERSEDIA'}`;
+      document.getElementById('detailStock').innerText = `STATUS: ${product.stock || 'KOSONG'}`;
       document.getElementById('detailDescription').innerText = product.description || 'Artikel koleksi terbatas dari +62 Store.';
 
       const discountBadge = document.getElementById('detailDiscountBadge');
