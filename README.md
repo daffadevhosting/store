@@ -333,8 +333,8 @@ Distributed under MIT License. See LICENSE for more information.
 
 +62 STORE
 
-- 📍 Alamat: J59R+37 Cibeuti, Tasikmalaya Regency, West Java
-- 📱 WA: 0811-1119-1209
+- 📍 Alamat: Tasikmalaya Regency, West Java
+- 📱 WA: 0811-1111-1111
 - 🗺️ Google Maps
 
 ---
