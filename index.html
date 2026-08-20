@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
   
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="./tailwind.css" />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,8 +20,6 @@
   <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
   <style type="text/tailwindcss">
-    @import "tailwindcss";
-
     @theme {
       --font-sans: 'Inter', sans-serif;
       --font-display: 'Space Grotesk', sans-serif;
@@ -75,6 +74,63 @@
     ion-modal {
       --background: #09090b;
       --border-color: #27272a;
+    }
+
+    ion-modal#productDetailModal {
+      --width: 100%;
+      --height: 100%;
+      --max-height: 100%;
+      --border-radius: 0px;
+      margin: auto;
+    }
+
+    .drawer-btn {
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      transition: all 0.2s ease !important;
+    }
+    .drawer-btn:hover {
+      color: #ffffff !important;
+      border-color: #52525b !important;
+    }
+
+    .voice-btn {
+      color: #d4d4d8 !important;
+      padding: 6px 12px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      transition: all 0.2s ease !important;
+    }
+    .voice-btn:hover {
+      background-color: #3f3f46 !important;
+      color: #ffffff !important;
+    }
+    .voice-btn:disabled {
+      background-color: #27272a !important;
+      color: #71717a !important;
+      cursor: not-allowed !important;
+    }
+    .voice-btn:disabled:hover {
+      background-color: #27272a !important;
+      color: #71717a !important;
+    }
+    .voice-btn:active {
+      transform: scale(0.98) !important;
     }
 
     .btn-filter-active {
@@ -252,9 +308,7 @@
       border-color: #71717a !important;
     }
 
-    .btn-ai-mic {
-      background-color: #27272a !important;
-      color: #c084fc !important;
+    .btn-mic-ai {
       border: 1px solid #3f3f46 !important;
       padding: 10px 14px !important;
       cursor: pointer !important;
@@ -264,7 +318,7 @@
       justify-content: center !important;
       transition: background-color 0.2s ease !important;
     }
-    .btn-ai-mic:hover {
+    .btn-mic-ai:hover {
       background-color: #3f3f46 !important;
     }
 
@@ -285,6 +339,26 @@
       background-color: #e4e4e7 !important;
     }
 
+    .btn-cart {
+      background-color: #18181b !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      padding: 10px 14px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      border-radius: 0px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-cart:hover {
+      background-color: #27272a !important;
+      color: #ffffff !important;
+      border-color: #71717a !important;
+    }
+    
     @keyframes pulse-ring {
       0% { transform: scale(0.95); opacity: 0.8; }
       50% { transform: scale(1.15); opacity: 0.4; }
@@ -312,14 +386,14 @@
           </div>
 
           <div class="flex items-center gap-3">
-            <button onclick="toggleAiDrawer()" class="relative px-3.5 py-2 border border-purple-500/50 hover:border-purple-400 transition-colors bg-purple-950/30 text-purple-300 text-xs font-mono flex items-center gap-2 cursor-pointer rounded-none">
+            <button onclick="toggleAiDrawer()" class="drawer-btn relative px-3 py-2 border border-purple-500/50 hover:border-purple-400 transition-colors bg-purple-950/30 text-purple-300 text-xs font-mono flex items-center gap-2 cursor-pointer rounded-none">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
               <ion-icon name="sparkles-outline" class="text-sm text-purple-300"></ion-icon>
               <span class="hidden sm:inline">AI STORE ASSISTANT</span>
             </button>
 
-            <button onclick="openCartModal()" class="relative p-2.5 border border-zinc-800 hover:border-zinc-600 transition-colors bg-zinc-900 cursor-pointer flex items-center justify-center rounded-none">
-              <ion-icon name="bag-handle-outline" class="text-xl text-zinc-100 block"></ion-icon>
+            <button onclick="openCartModal()" class="btn-cart relative p-2 border border-zinc-800 hover:border-zinc-600 transition-colors bg-zinc-900 cursor-pointer flex items-center justify-center rounded-none">
+              <ion-icon name="bag-handle-outline" class="text-xl text-zinc-100 block" slot="icon-only"></ion-icon>
               <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                 0
               </span>
@@ -348,11 +422,11 @@
             Koleksi eksklusif distro streetwear dengan material kualitas ekspor, desain flat kontemporer, & potongan oversized fit modern.
           </p>
           <div class="flex flex-wrap gap-3 text-xs font-mono">
-            <a href="https://maps.app.goo.gl/sTWRVRh8Hp62doHw7?g_st=ac" target="_blank" class="border border-zinc-800 hover:border-zinc-500 px-3.5 py-2 text-zinc-300 flex items-center gap-1.5">
-              <ion-icon name="map-outline"></ion-icon> Buka Lokasi Toko (Google Maps)
-            </a>
             <a href="https://wa.me/62811111191209" target="_blank" class="border border-zinc-800 hover:border-emerald-500 px-3.5 py-2 text-emerald-400 flex items-center gap-1.5">
-              <ion-icon name="logo-whatsapp"></ion-icon> WA Admin: 0811-1119-1209
+              <ion-icon name="logo-whatsapp"></ion-icon> WhatsApp
+            </a>
+            <a href="https://maps.app.goo.gl/sTWRVRh8Hp62doHw7?g_st=ac" target="_blank" class="border border-zinc-800 hover:border-zinc-500 px-3.5 py-2 text-zinc-300 flex items-center gap-1.5">
+              <ion-icon name="map-outline"></ion-icon> Lokasi Toko (Google Maps)
             </a>
           </div>
         </div>
@@ -400,6 +474,7 @@
       <footer class="mt-20 border-t border-zinc-800 bg-zinc-950 py-10 px-4 text-center">
         <div class="max-w-7xl mx-auto">
           <span class="bg-white text-black font-extrabold px-2 py-0.5 text-base tracking-tighter font-display uppercase">+62</span>
+            <span class="font-display font-bold tracking-widest text-lg text-white">STORE</span>
           <p class="text-zinc-500 text-xs font-mono mt-4">© 2026 PLUS62 STORE. ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
@@ -420,7 +495,7 @@
           <h3 class="font-bold text-base tracking-wide text-white flex items-center gap-2 font-display">
             +62 ASSISTANT
             <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold text-[10px] px-2 py-0.5 rounded-none uppercase tracking-wider font-mono">
-              11Labs v2 + Llama
+              Llama + 11Labs
             </span>
           </h3>
         </div>
@@ -435,7 +510,7 @@
         <div id="voiceStatusDot" class="w-2.5 h-2.5 bg-zinc-600"></div>
         <span id="voiceStatusText" class="text-xs font-mono text-purple-300">Voice Mode: Idle</span>
       </div>
-      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all">
+      <button id="toggleVoiceBtn" onclick="toggleVoiceMode()" class="voice-btn px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all">
         <ion-icon name="mic-outline" class="text-sm"></ion-icon>
         <span>START VOICE</span>
       </button>
@@ -490,14 +565,14 @@
           type="button" 
           onclick="toggleVoiceMode()" 
           title="Bicara via Suara"
-          class="btn-ai-mic"
+          class="btn-mic-ai bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-none transition-colors"
         >
           <ion-icon slot="icon-only" name="mic-outline" class="text-base"></ion-icon>
         </button>
 
         <button 
           type="submit" 
-          class="btn-ai-send"
+          class="btn-ai-send px-3 py-2 rounded-none transition-colors"
         >
           <ion-icon slot="icon-only" name="send" class="text-base"></ion-icon>
         </button>
@@ -516,45 +591,53 @@
         </button>
       </div>
 
-      <div class="p-4 sm:p-6 flex-1 max-w-2xl mx-auto w-full">
-        <div class="bg-zinc-900 border border-zinc-800 mb-6 aspect-square relative overflow-hidden">
-          <img id="detailImg" src="" alt="" class="w-full h-full object-cover">
-          <div id="detailDiscountBadge" class="hidden absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider">
-            DISCOUNT
-          </div>
-        </div>
-
-        <h2 id="detailTitle" class="font-display text-2xl font-bold uppercase tracking-tight text-white mb-1"></h2>
+      <!-- DISPLAY PRODUCT MODAL RESPONSIVE -->
+      <div class="display-product p-4 sm:p-6 md:p-8 flex-1 max-w-4xl mx-auto w-full flex flex-col md:flex-row gap-6 md:gap-8 items-start">
         
-        <div class="flex items-baseline gap-3 mb-4">
-          <span id="detailPrice" class="font-mono text-xl font-bold text-white"></span>
-          <span id="detailStock" class="text-xs text-zinc-400 font-mono"></span>
-        </div>
-
-        <div id="detailDescription" class="text-zinc-400 text-sm leading-relaxed mb-6 border-t border-b border-zinc-800/80 py-4"></div>
-
-        <div id="stylesContainer" class="mb-6 hidden">
-          <label class="block text-xs font-mono text-zinc-400 mb-2 uppercase">
-            Pilih Variasi Warna / Style: <span id="selectedStyleName" class="text-white font-bold ml-1"></span>
-          </label>
-          <div id="stylesList" class="flex flex-wrap gap-2"></div>
-        </div>
-
-        <div class="mb-8">
-          <label class="block text-xs font-mono text-zinc-400 mb-2 uppercase">Pilih Ukuran (Size):</label>
-          <div id="sizeOptions" class="flex flex-wrap gap-2">
-            <button onclick="selectSize('S')" class="size-btn btn-size-inactive">S</button>
-            <button onclick="selectSize('M')" class="size-btn btn-size-active">M</button>
-            <button onclick="selectSize('L')" class="size-btn btn-size-inactive">L</button>
-            <button onclick="selectSize('XL')" class="size-btn btn-size-inactive">XL</button>
-            <button onclick="selectSize('XXL')" class="size-btn btn-size-inactive">XXL</button>
+        <!-- KOLOM GAMBAR -->
+        <div class="w-full md:w-1/2 shrink-0">
+          <div class="bg-zinc-900 border border-zinc-800 aspect-square relative overflow-hidden">
+            <img id="detailImg" src="" alt="" class="w-full h-full object-cover">
+            <div id="detailDiscountBadge" class="hidden absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider">
+              DISCOUNT
+            </div>
           </div>
         </div>
 
-        <button onclick="addToCartFromModal()" class="btn-primary-action font-display">
-          <ion-icon name="bag-add-outline" class="text-lg"></ion-icon>
-          + Tambahkan Ke Keranjang
-        </button>
+        <!-- KOLOM DETAIL PRODUK -->
+        <div class="w-full md:w-1/2 flex flex-col h-full">
+          <h2 id="detailTitle" class="font-display text-2xl font-bold uppercase tracking-tight text-white mb-1"></h2>
+          
+          <div class="flex items-baseline gap-3 mb-4">
+            <span id="detailPrice" class="font-mono text-xl font-bold text-white"></span>
+            <span id="detailStock" class="text-xs text-zinc-400 font-mono"></span>
+          </div>
+
+          <div id="detailDescription" class="text-zinc-400 text-sm leading-relaxed mb-6 border-t border-b border-zinc-800/80 py-4"></div>
+
+          <div id="stylesContainer" class="mb-6 hidden">
+            <label class="block text-xs font-mono text-zinc-400 mb-2 uppercase">
+              Pilih Variasi Warna / Style: <span id="selectedStyleName" class="text-white font-bold ml-1"></span>
+            </label>
+            <div id="stylesList" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <div class="mb-8">
+            <label class="block text-xs font-mono text-zinc-400 mb-2 uppercase">Pilih Ukuran (Size):</label>
+            <div id="sizeOptions" class="flex flex-wrap gap-2">
+              <button onclick="selectSize('S')" class="size-btn btn-size-inactive">S</button>
+              <button onclick="selectSize('M')" class="size-btn btn-size-active">M</button>
+              <button onclick="selectSize('L')" class="size-btn btn-size-inactive">L</button>
+              <button onclick="selectSize('XL')" class="size-btn btn-size-inactive">XL</button>
+              <button onclick="selectSize('XXL')" class="size-btn btn-size-inactive">XXL</button>
+            </div>
+          </div>
+
+          <button onclick="addToCartFromModal()" class="btn-primary-action font-display mt-auto">
+            <ion-icon name="bag-add-outline" class="text-lg"></ion-icon>
+            + Tambahkan Ke Keranjang
+          </button>
+        </div>
 
       </div>
     </div>
@@ -737,7 +820,6 @@
           currentAudioPlayer = audio;
           audio.play().catch(e => {
             console.warn("Autoplay audio diblokir browser:", e);
-            // Fallback ke TTS bawaan jika audio gagal diputar
             speakTextFallback('Maaf, suara dari ElevenLabs gagal diputar.');
           });
         } catch (e) {
@@ -747,7 +829,6 @@
       }
     }
 
-    // Fallback TTS menggunakan Web Speech API
     function speakTextFallback(text) {
       if (!window.speechSynthesis) return;
       window.speechSynthesis.cancel();
@@ -1239,7 +1320,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       inputElem.value = '';
       scrollToBottomChat();
 
-      const typingId = appendChatMessage('ai', isVoice ? '⚡ *Mendengarkan & Merespons via Suara...*' : '⚡ *Mengetik...*');
+      const typingId = appendChatMessage('ai', isVoice ? '⚡ Mendengarkan & Merespons via Suara...' : '⚡ Mengetik...');
 
       try {
         const recentHistory = chatHistory.slice(-10);
@@ -1264,7 +1345,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
 
         updateChatMessage(typingId, replyText);
 
-        // Voice output: prioritas audio dari ElevenLabs, fallback TTS bawaan
         if (isVoice) {
           if (data.audio) {
             speakAiAudio(data.audio);
@@ -1273,7 +1353,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           }
         }
 
-        // Handle actions
         if (data.action === 'OPEN_CART') {
           openCartModal();
           showToast('Keranjang dibuka oleh AI Assistant');
@@ -1333,7 +1412,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
             </div>
           ` : ''}
           <div class="p-3.5 max-w-[85%] leading-relaxed ${isUser ? 'bg-purple-950/80 border border-purple-800/80 text-purple-100' : 'bg-zinc-900 border border-zinc-800 text-zinc-200'} text-xs rounded-none shadow-none">
-            <p class="font-bold font-mono text-[9px] ${isUser ? 'text-purple-400' : 'text-zinc-500'} uppercase mb-1">// ${isUser ? 'YOU' : '+62 AI ASSISTANT'}</p>
+            <p class="font-bold font-mono text-[9px] ${isUser ? 'text-purple-400' : 'text-zinc-500'} uppercase mb-1">// ${isUser ? 'YOU' : '+62 AI'}</p>
             <div class="msg-body">${text}</div>
           </div>
         </div>
@@ -1349,7 +1428,6 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       if (msgElem) {
         const textContainer = msgElem.querySelector('.msg-body');
         if (textContainer) {
-          // Simpan konten gambar jika ada
           const imgContainer = textContainer.querySelector('div');
           textContainer.innerHTML = newText;
           if (imgContainer) textContainer.appendChild(imgContainer);
@@ -1369,7 +1447,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           isVoiceActive = true;
           document.getElementById('voiceStatusDot').className = "w-2.5 h-2.5 bg-emerald-400 voice-pulse";
           document.getElementById('voiceStatusText').innerText = "Voice Mode: Mendengarkan...";
-          document.getElementById('toggleVoiceBtn').className = "px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
+          document.getElementById('toggleVoiceBtn').className = "voice-btn bg-red-600 hover:bg-red-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
           document.getElementById('toggleVoiceBtn').innerHTML = `<ion-icon name="stop-circle-outline" class="text-sm"></ion-icon> STOP VOICE`;
         };
 
@@ -1386,7 +1464,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           isVoiceActive = false;
           document.getElementById('voiceStatusDot').className = "w-2.5 h-2.5 bg-zinc-600";
           document.getElementById('voiceStatusText').innerText = "Voice Mode: Idle";
-          document.getElementById('toggleVoiceBtn').className = "px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
+          document.getElementById('toggleVoiceBtn').className = "voice-btn bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
           document.getElementById('toggleVoiceBtn').innerHTML = `<ion-icon name="mic-outline" class="text-sm"></ion-icon> START VOICE`;
         };
 
