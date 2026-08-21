@@ -730,8 +730,8 @@
           <div onclick="openProductDetail('${product.slug}')" class="product-card bg-zinc-950 border border-zinc-800 p-2 sm:p-3 cursor-pointer group hover:border-zinc-500 flex flex-col justify-between">
             <div>
               <div class="bg-zinc-900 aspect-square overflow-hidden relative mb-3">
-                <img 
-                  src="${fullImageUrl}" 
+                <img
+                  src="${fullImageUrl}"
                   alt="${product.title}"
                   loading="lazy"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -742,8 +742,12 @@
                     ${product.discount}
                   </span>
                 ` : ''}
+                ${!product.stock || product.stock === 'HABIS' ? `
+                  <span class="absolute top-2 right-2 bg-zinc-800 text-white text-[9px] font-bold px-1.5 py-0.5 uppercase tracking-wider border border-white/20">
+                    SOLD OUT
+                  </span>
+                ` : ''}
               </div>
-
               <h3 class="font-display text-xs sm:text-sm font-bold uppercase tracking-tight text-zinc-100 group-hover:text-white line-clamp-1 mb-1">
                 ${product.title}
               </h3>
@@ -753,8 +757,8 @@
               <span class="font-mono text-xs sm:text-sm font-semibold text-white">
                 Rp ${formattedPrice}
               </span>
-              <span class="text-[10px] font-mono text-zinc-500 uppercase">
-                ${product.stock || 'HABIS'}
+              <span class="text-[10px] font-mono ${!product.stock || product.stock === 'HABIS' ? 'text-red-500' : 'text-zinc-500'} uppercase">
+                ${!product.stock || product.stock === 'HABIS' ? 'SOLD OUT' : product.stock}
               </span>
             </div>
           </div>
@@ -776,23 +780,82 @@
       return parseInt(numStr, 10) || 0;
     }
 
-    function openProductDetail(slug) {
-      const product = rawProducts.find(p => p.slug === slug);
-      if (!product) return;
+function openProductDetail(slug) {
+  const product = rawProducts.find(p => p.slug === slug);
+  if (!product) return;
 
-      currentSelectedProduct = product;
-      selectedSize = 'M';
-      selectedStyleOption = (product.styles && product.styles.length > 0) ? product.styles[0] : null;
+  currentSelectedProduct = product;
+  selectedSize = 'M';
+  selectedStyleOption = (product.styles && product.styles.length > 0) ? product.styles[0] : null;
 
-      document.getElementById('detailTitle').innerText = product.title;
-      document.getElementById('detailPrice').innerText = `Rp ${formatRupiah(product.price)}`;
-      document.getElementById('detailStock').innerText = `STATUS: ${product.stock || 'KOSONG'}`;
+  document.getElementById('detailTitle').innerText = product.title;
+  document.getElementById('detailPrice').innerText = `Rp ${formatRupiah(product.price)}`;
+
+  // --- UPDATE: Tampilkan status stok dan nonaktifkan tombol jika SOLD OUT ---
+  const isSoldOut = !product.stock || product.stock === 'HABIS' || product.stock === 'KOSONG';
+  const stockStatus = isSoldOut ? 'SOLD OUT' : product.stock;
+  const stockColorClass = isSoldOut ? 'text-red-500' : 'text-zinc-400';
+
+  document.getElementById('detailStock').innerHTML = `
+    <span class="font-mono text-xs uppercase ${stockColorClass}">
+      STATUS: ${stockStatus}
+    </span>
+  `;
+
+  // --- Nonaktifkan tombol "Tambahkan Ke Keranjang" jika SOLD OUT ---
+  const addToCartBtn = document.querySelector('.btn-primary-action');
+  if (addToCartBtn) {
+    if (isSoldOut) {
+      addToCartBtn.disabled = true;
+      addToCartBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      addToCartBtn.innerHTML = `
+        <ion-icon name="ban-outline" class="text-lg"></ion-icon>
+        STOK HABIS
+      `;
+    } else {
+      addToCartBtn.disabled = false;
+      addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      addToCartBtn.innerHTML = `
+        <ion-icon name="bag-add-outline" class="text-lg"></ion-icon>
+        + Tambahkan Ke Keranjang
+      `;
+    }
+  }
+
+  // --- Nonaktifkan tombol ukuran jika SOLD OUT ---
+  const sizeButtons = document.querySelectorAll('.size-btn');
+  sizeButtons.forEach(btn => {
+    if (isSoldOut) {
+      btn.disabled = true;
+      btn.classList.add('opacity-50', 'cursor-not-allowed');
+      btn.classList.remove('btn-size-active', 'btn-size-inactive');
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+      btn.classList.add('btn-size-active', 'btn-size-inactive');
+    }
+  });
       document.getElementById('detailDescription').innerText = product.description || 'Artikel koleksi terbatas dari +62 Store.';
 
       const discountBadge = document.getElementById('detailDiscountBadge');
+      const soldOutBadge = document.getElementById('detailSoldOutBadge'); // Gunakan badge yang sudah ada atau tambahkan yang baru
+
+      // Badge Discount
       if (product.discount && product.discount !== 'Tidak Ada') {
         discountBadge.innerText = product.discount;
         discountBadge.classList.remove('hidden');
+        discountBadge.classList.add('bg-red-600');
+        discountBadge.classList.remove('bg-zinc-800');
+      } else {
+        discountBadge.classList.add('hidden');
+      }
+
+      // Badge SOLD OUT (jika stok habis)
+      if (!product.stock || product.stock === 'HABIS' || product.stock === 'KOSONG') {
+        discountBadge.innerText = 'SOLD OUT';
+        discountBadge.classList.remove('hidden');
+        discountBadge.classList.add('bg-zinc-800', 'border', 'border-white/20');
+        discountBadge.classList.remove('bg-red-600');
       } else {
         discountBadge.classList.add('hidden');
       }
@@ -875,6 +938,13 @@
 
     function addToCartFromModal() {
       if (!currentSelectedProduct) return;
+
+      // --- Cek apakah stok habis ---
+      const isSoldOut = !currentSelectedProduct.stock || currentSelectedProduct.stock === 'HABIS' || currentSelectedProduct.stock === 'KOSONG';
+      if (isSoldOut) {
+        showToast('Maaf, stok untuk produk ini sudah habis!');
+        return; // Hentikan eksekusi
+      }
 
       const styleTitle = selectedStyleOption ? getStyleName(selectedStyleOption) : '-';
       const itemImage = selectedStyleOption ? getStyleImagePath(selectedStyleOption, currentSelectedProduct.image) : (currentSelectedProduct.image.startsWith('http') ? currentSelectedProduct.image : `${BASE_URL}${currentSelectedProduct.image}`);
