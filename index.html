@@ -19,6 +19,12 @@
   <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
+  <!-- CDN marked.js (untuk parsing markdown) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- CDN DOMpurify (untuk sanitasi HTML) -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
   <style type="text/tailwindcss">
     @theme {
       --font-sans: 'Inter', sans-serif;
@@ -38,6 +44,62 @@
       --ion-toolbar-background: #09090b;
       --ion-toolbar-border-color: #27272a;
       --ion-item-background: #09090b;
+    }
+
+    /* CSS untuk styling markdown di chat AI */
+    .msg-body {
+      word-wrap: break-word;
+      line-height: 1.3; /* Kurangi line-height untuk spasi yang lebih rapi */
+    }
+    .msg-body p {
+      margin: 0.25em 0; /* Kurangi margin untuk paragraf */
+    }
+    .msg-body p:first-child {
+      margin-top: 0; /* Hilangkan margin atas untuk paragraf pertama */
+    }
+    .msg-body p:last-child {
+      margin-bottom: 0; /* Hilangkan margin bawah untuk paragraf terakhir */
+    }
+    .msg-body pre {
+      background: #18181b;
+      padding: 0.5em;
+      border-radius: 0.25em;
+      overflow-x: auto;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8em;
+    }
+    .msg-body code {
+      background: #18181b;
+      padding: 0.2em 0.4em;
+      border-radius: 0.25em;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.85em;
+    }
+    .msg-body blockquote {
+      border-left: 2px solid #71717a;
+      padding-left: 0.5em;
+      margin-left: 0;
+      color: #a1a1aa;
+    }
+    .msg-body a {
+      color: #fbbf24;
+      text-decoration: underline;
+    }
+    .msg-body ul, .msg-body ol {
+      margin: 0.5em 0;
+      padding-left: 1.5em;
+    }
+    .msg-body li {
+      margin: 0.25em 0;
+    }
+    .msg-body h1, .msg-body h2, .msg-body h3, .msg-body h4, .msg-body h5, .msg-body h6 {
+      font-weight: bold;
+      margin: 0.5em 0;
+    }
+    .msg-body hr {
+      border: none;
+      border-top: 1px solid #3f3f46;
+      margin: 0.5em 0;
     }
   </style>
 </head>
@@ -492,6 +554,26 @@
     
     const productDetailModal = document.getElementById('productDetailModal');
     const cartModal = document.getElementById('cartModal');
+
+    // --- Konfigurasi marked.js ---
+    marked.setOptions({
+      breaks: true, // Konversi line break ke <br>
+      gfm: true, // GitHub Flavored Markdown
+      sanitize: false, // Kita akan gunakan DOMpurify sendiri
+    });
+
+    // --- Fungsi untuk merender markdown dengan aman ---
+    function renderMarkdown(text) {
+      if (!text) return '';
+      const markdownHtml = marked.parse(text);
+      return DOMPurify.sanitize(markdownHtml, {
+        ALLOWED_TAGS: [
+          'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'code', 'pre',
+          'ul', 'ol', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr'
+        ],
+        ALLOWED_ATTR: ['href', 'title', 'class', 'style'],
+      });
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       fetchProducts();
@@ -1191,8 +1273,11 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
             const imageHtml = `<div class="mt-2 border border-zinc-800 bg-zinc-950 p-1"><img src="${imgToShow}" alt="${foundProduct.title}" class="w-full aspect-square object-cover mb-1"><p class="text-[10px] font-mono text-zinc-400 text-center uppercase">// ${foundProduct.title} (${data.payload.style || 'Standard'})</p></div>`;
             const msgElem = document.getElementById(typingId);
             if (msgElem) {
-              msgElem.querySelector('.msg-body').insertAdjacentHTML('beforeend', imageHtml);
-              scrollToBottomChat();
+              const msgBody = msgElem.querySelector('.msg-body');
+              if (msgBody) {
+                msgBody.insertAdjacentHTML('beforeend', imageHtml);
+                scrollToBottomChat();
+              }
             }
           }
         } else if (data.action === 'OPEN_MAPS') {
@@ -1215,6 +1300,8 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
       const msgId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
 
       const isUser = sender === 'user';
+      const renderedText = renderMarkdown(text);
+
       const msgHtml = `
         <div id="${msgId}" class="flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} font-sans">
           ${!isUser ? `
@@ -1224,7 +1311,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
           ` : ''}
           <div class="p-3.5 max-w-[85%] leading-relaxed ${isUser ? 'bg-purple-950/80 border border-purple-800/80 text-purple-100' : 'bg-zinc-900 border border-zinc-800 text-zinc-200'} text-xs rounded-none shadow-none">
             <p class="font-bold font-mono text-[9px] ${isUser ? 'text-purple-400' : 'text-zinc-500'} uppercase mb-1">// ${isUser ? 'YOU' : '+62 AI ASSISTANT'}</p>
-            <div class="msg-body">${text}</div>
+            <div class="msg-body">${renderedText}</div>
           </div>
         </div>
       `;
@@ -1240,7 +1327,7 @@ Halo Admin, saya ingin memesan artikel distro di atas. Mohon konfirmasi ketersed
         const textContainer = msgElem.querySelector('.msg-body');
         if (textContainer) {
           const imgContainer = textContainer.querySelector('div');
-          textContainer.innerHTML = newText;
+          textContainer.innerHTML = renderMarkdown(newText);
           if (imgContainer) textContainer.appendChild(imgContainer);
         }
         scrollToBottomChat();
