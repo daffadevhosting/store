@@ -145,21 +145,21 @@
 
     /* Custom scrollbar untuk ion-content */
     ion-content::-webkit-scrollbar {
-      width: 8px;
+      width: 4px !important;
     }
 
     ion-content::-webkit-scrollbar-thumb {
-      background: #27272a;
-      border-radius: 4px;
+      background: #27272a !important;
+      border-radius: 4px !important;
     }
 
     /* Hide scrollbar untuk elemen dengan class no-scrollbar */
     .no-scrollbar::-webkit-scrollbar {
-      display: none;
+      display: none !important;
     }
     .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      -ms-overflow-style: none !important;  /* IE and Edge */
+      scrollbar-width: none !important;  /* Firefox */
     }
   </style>
 </head>

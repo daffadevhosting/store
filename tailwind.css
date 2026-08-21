@@ -14,8 +14,8 @@
       display: none;
     }
     .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      -ms-overflow-style: none !important;  /* IE and Edge */
+      scrollbar-width: none !important;  /* Firefox */
     }
 
     .product-card {
