@@ -45,7 +45,7 @@
     .drawer-btn {
       color: #d4d4d8 !important;
       border: 1px solid #27272a !important;
-      padding: 8px 16px !important;
+      padding: 13px !important;
       font-size: 12px !important;
       font-weight: 600 !important;
       text-transform: uppercase !important;
@@ -69,7 +69,8 @@
       letter-spacing: 0.05em !important;
       cursor: pointer !important;
       border-radius: 0px !important;
-      display: flex !important;
+      display: none !important;
+      visibility: hidden !important;
       align-items: center !important;
       gap: 6px !important;
       transition: all 0.2s ease !important;
@@ -326,7 +327,7 @@
     border-color: #3f3f46 !important;
     color: #71717a !important;
   }
-  
+
     @keyframes pulse-ring {
       0% { transform: scale(0.95); opacity: 0.8; }
       50% { transform: scale(1.15); opacity: 0.4; }
@@ -338,4 +339,12 @@
 
     #aiDrawer {
       height: 100dvh;
+      z-index: 10;
+    }
+    .ion-no-border {
+      --border-width: 0px;
+    }
+    ion-header.ion-no-border {
+      --background: #09090b;
+    z-index: 0!important;
     }
