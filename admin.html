@@ -14,6 +14,10 @@
     .display { font-family: 'Space Grotesk', sans-serif; }
     input { outline: none; }
     input:focus { border-color: #fbbf24; }
+    #globalDialog[hidden] { display: none; }
+    #globalDialog { background: rgba(9, 9, 11, .78); }
+    .dialog-panel { animation: dialog-in .18s ease-out; }
+    @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
   </style>
 </head>
 <body>
@@ -81,6 +85,23 @@
     </section>
   </main>
 
+  <div id="globalDialog" hidden class="fixed inset-0 z-50 flex items-center justify-center p-4" role="presentation">
+    <section class="dialog-panel w-full max-w-md border border-zinc-700 bg-zinc-950 p-5 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <div class="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <p id="dialogEyebrow" class="font-mono text-[10px] uppercase tracking-widest text-amber-400">// CONFIRM ACTION</p>
+          <h2 id="dialogTitle" class="display mt-1 text-xl font-bold">Konfirmasi</h2>
+        </div>
+        <button id="dialogClose" type="button" class="border border-zinc-800 px-2 py-1 text-zinc-400 hover:border-zinc-500 hover:text-white" aria-label="Tutup">&times;</button>
+      </div>
+      <p id="dialogMessage" class="text-sm leading-relaxed text-zinc-400"></p>
+      <div class="mt-6 flex justify-end gap-2">
+        <button id="dialogCancel" type="button" class="border border-zinc-700 px-4 py-2 text-xs text-zinc-300 hover:border-white hover:text-white">Batal</button>
+        <button id="dialogConfirm" type="button" class="bg-amber-400 px-4 py-2 text-xs font-bold text-zinc-950 hover:bg-amber-300">Lanjutkan</button>
+      </div>
+    </section>
+  </div>
+
   <script>
     const BACKEND_URL = 'https://plus62ai.warpzone.workers.dev';
     const ADS_URL = 'https://app-core.warpzone.workers.dev';
@@ -90,6 +111,44 @@
 
     const $ = (selector) => document.querySelector(selector);
     const headers = () => ({ Authorization: `Bearer ${adminToken}` });
+    let dialogResolve = null;
+
+    function closeDialog(result = false) {
+      $('#globalDialog').hidden = true;
+      if (dialogResolve) {
+        const resolve = dialogResolve;
+        dialogResolve = null;
+        resolve(result);
+      }
+    }
+
+    function openDialog({ title, message, eyebrow = '// CONFIRM ACTION', confirmLabel = 'Lanjutkan', destructive = false, alertOnly = false }) {
+      $('#dialogEyebrow').textContent = eyebrow;
+      $('#dialogTitle').textContent = title;
+      $('#dialogMessage').textContent = message;
+      $('#dialogConfirm').textContent = confirmLabel;
+      $('#dialogConfirm').className = destructive ? 'bg-red-500 px-4 py-2 text-xs font-bold text-white hover:bg-red-400' : 'bg-amber-400 px-4 py-2 text-xs font-bold text-zinc-950 hover:bg-amber-300';
+      $('#dialogCancel').hidden = alertOnly;
+      $('#dialogConfirm').textContent = alertOnly ? 'Tutup' : confirmLabel;
+      $('#globalDialog').hidden = false;
+      $('#dialogConfirm').focus();
+      if (alertOnly) return Promise.resolve(true);
+      return new Promise((resolve) => { dialogResolve = resolve; });
+    }
+
+    function showAlert(message, title = 'Info', destructive = false) {
+      return openDialog({ title, message, eyebrow: destructive ? '// ERROR' : '// SYSTEM MESSAGE', alertOnly: true, confirmLabel: 'Tutup', destructive });
+    }
+
+    function confirmAction(message, title = 'Konfirmasi') {
+      return openDialog({ title, message, confirmLabel: 'Ya, lanjutkan' });
+    }
+
+    $('#dialogClose').addEventListener('click', () => closeDialog(false));
+    $('#dialogCancel').addEventListener('click', () => closeDialog(false));
+    $('#dialogConfirm').addEventListener('click', () => closeDialog(true));
+    $('#globalDialog').addEventListener('click', (event) => { if (event.target.id === 'globalDialog') closeDialog(false); });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !$('#globalDialog').hidden) closeDialog(false); });
 
     function showDashboard() {
       $('#loginPanel').classList.add('hidden');
@@ -154,12 +213,12 @@
     $('#logoutButton').addEventListener('click', () => { localStorage.removeItem('plus62_admin_token'); location.reload(); });
     $('#addAdButton').addEventListener('click', () => { ads.push({ title: 'Promo Baru', image: '', link: '' }); renderAds(); });
     $('#adsList').addEventListener('input', (event) => { const index = event.target.dataset.index; const field = event.target.dataset.field; if (index !== undefined && field) ads[index][field] = event.target.value; });
-    $('#adsList').addEventListener('click', (event) => { const index = event.target.dataset.remove; if (index !== undefined) { ads.splice(Number(index), 1); renderAds(); } });
-    $('#saveAdsButton').addEventListener('click', async () => { $('#adsStatus').textContent = 'Menyimpan...'; try { const saved = await request(`${ADS_URL}/admin/ads`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ads, interval: Number($('#intervalInput').value) || 20 }) }); ads = saved.ads; renderAds(); $('#adsStatus').textContent = 'Campaign berhasil disimpan.'; } catch (error) { $('#adsStatus').textContent = error.message; } });
-    $('#importProductsButton').addEventListener('click', async () => { $('#productsStatus').textContent = 'Mengimpor katalog...'; try { const result = await request(`${BACKEND_URL}/api/admin/products/import`, { method: 'POST' }); products = result.products || []; renderProducts(); $('#productsStatus').textContent = `${result.imported} produk berhasil diimpor ke D1.`; } catch (error) { $('#productsStatus').textContent = error.message; } });
+    $('#adsList').addEventListener('click', async (event) => { const index = event.target.dataset.remove; if (index !== undefined && await openDialog({ title: 'Hapus campaign', message: 'Hapus campaign banner ini dari daftar?', confirmLabel: 'Hapus', destructive: true })) { ads.splice(Number(index), 1); renderAds(); await showAlert('Campaign dihapus dari daftar sementara. Klik Simpan campaign untuk menerapkan perubahan.', 'Campaign dihapus'); } });
+    $('#saveAdsButton').addEventListener('click', async () => { if (!await confirmAction('Simpan seluruh perubahan campaign banner ke server?', 'Simpan campaign')) return; $('#adsStatus').textContent = 'Menyimpan...'; try { const saved = await request(`${ADS_URL}/admin/ads`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ads, interval: Number($('#intervalInput').value) || 20 }) }); ads = saved.ads; renderAds(); $('#adsStatus').textContent = 'Campaign berhasil disimpan.'; await showAlert('Campaign banner berhasil disimpan.', 'Berhasil'); } catch (error) { $('#adsStatus').textContent = error.message; await showAlert(error.message, 'Gagal menyimpan campaign', true); } });
+    $('#importProductsButton').addEventListener('click', async () => { if (!await confirmAction('Import katalog eksternal akan menambah atau memperbarui data produk di D1. Lanjutkan?', 'Import katalog')) return; $('#productsStatus').textContent = 'Mengimpor katalog...'; try { const result = await request(`${BACKEND_URL}/api/admin/products/import`, { method: 'POST' }); products = result.products || []; renderProducts(); $('#productsStatus').textContent = `${result.imported} produk berhasil diimpor ke D1.`; await showAlert(`${result.imported} produk berhasil diimpor ke D1.`, 'Import berhasil'); } catch (error) { $('#productsStatus').textContent = error.message; await showAlert(error.message, 'Import gagal', true); } });
     $('#addProductButton').addEventListener('click', () => { products.unshift({ title: '', slug: '', image: '', price: 0, stock: 0 }); renderProducts(); });
     $('#productsList').addEventListener('input', (event) => { const index = event.target.dataset.index; const field = event.target.dataset.productField; if (index !== undefined && field) products[index][field] = event.target.value; });
-    $('#productsList').addEventListener('click', async (event) => { const saveIndex = event.target.dataset.productSave; const removeIndex = event.target.dataset.productRemove; try { if (saveIndex !== undefined) { const product = products[Number(saveIndex)]; const method = product.id ? 'PUT' : 'POST'; const url = product.id ? `${BACKEND_URL}/api/admin/products/${encodeURIComponent(product.slug)}` : `${BACKEND_URL}/api/admin/products`; const saved = await request(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(product) }); products[Number(saveIndex)] = saved.product; renderProducts(); $('#productsStatus').textContent = 'Produk tersimpan di D1.'; } else if (removeIndex !== undefined) { const product = products[Number(removeIndex)]; if (product.id) await request(`${BACKEND_URL}/api/admin/products/${encodeURIComponent(product.slug)}`, { method: 'DELETE' }); products.splice(Number(removeIndex), 1); renderProducts(); $('#productsStatus').textContent = 'Produk dihapus.'; } } catch (error) { $('#productsStatus').textContent = error.message; } });
+    $('#productsList').addEventListener('click', async (event) => { const saveIndex = event.target.dataset.productSave; const removeIndex = event.target.dataset.productRemove; try { if (saveIndex !== undefined) { if (!await confirmAction('Simpan perubahan produk ini ke database D1?', 'Simpan produk')) return; const product = products[Number(saveIndex)]; const method = product.id ? 'PUT' : 'POST'; const url = product.id ? `${BACKEND_URL}/api/admin/products/${encodeURIComponent(product.slug)}` : `${BACKEND_URL}/api/admin/products`; const saved = await request(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(product) }); products[Number(saveIndex)] = saved.product; renderProducts(); $('#productsStatus').textContent = 'Produk tersimpan di D1.'; await showAlert('Produk berhasil disimpan ke D1.', 'Berhasil'); } else if (removeIndex !== undefined) { const product = products[Number(removeIndex)]; if (!await openDialog({ title: 'Hapus produk', message: `Hapus ${product.title || 'produk ini'} dari katalog?`, confirmLabel: 'Hapus', destructive: true })) return; if (product.id) await request(`${BACKEND_URL}/api/admin/products/${encodeURIComponent(product.slug)}`, { method: 'DELETE' }); products.splice(Number(removeIndex), 1); renderProducts(); $('#productsStatus').textContent = 'Produk dihapus.'; await showAlert('Produk berhasil dihapus.', 'Berhasil'); } } catch (error) { $('#productsStatus').textContent = error.message; await showAlert(error.message, 'Aksi gagal', true); } });
 
     if (adminToken) { $('#tokenInput').value = adminToken; showDashboard(); }
   </script>
