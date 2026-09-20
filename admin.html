@@ -48,6 +48,15 @@
 
       <div id="statsGrid" class="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"></div>
 
+      <section class="mb-6 border border-zinc-800 bg-zinc-900/40 p-5">
+        <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div><p class="font-mono text-xs uppercase text-zinc-500">Catalog database</p><h2 class="display mt-1 text-xl font-bold">Produk D1</h2></div>
+          <div class="flex gap-2"><button id="importProductsButton" class="border border-emerald-500 px-3 py-2 text-xs font-bold text-emerald-300 hover:bg-emerald-500 hover:text-zinc-950">Import katalog lama</button><button id="addProductButton" class="border border-amber-400 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-amber-400 hover:text-zinc-950">+ Produk</button></div>
+        </div>
+        <div id="productsList" class="space-y-3"></div>
+        <p id="productsStatus" class="mt-3 text-xs text-zinc-500"></p>
+      </section>
+
       <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <section class="border border-zinc-800 bg-zinc-900/40 p-5">
           <div class="mb-5 flex items-center justify-between">
@@ -77,6 +86,7 @@
     const ADS_URL = 'https://app-core.warpzone.workers.dev';
     let adminToken = localStorage.getItem('plus62_admin_token') || '';
     let ads = [];
+    let products = [];
 
     const $ = (selector) => document.querySelector(selector);
     const headers = () => ({ Authorization: `Bearer ${adminToken}` });
@@ -110,15 +120,21 @@
       $('#intervalInput').value = $('#intervalInput').value || 20;
     }
 
+    function renderProducts() {
+      $('#productsList').innerHTML = products.length ? products.map((product, index) => `<div class="grid gap-3 border border-zinc-800 bg-zinc-950 p-3 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end"><label class="text-[10px] uppercase text-zinc-500">Produk<input data-product-field="title" data-index="${index}" value="${escapeHtml(product.title)}" class="mt-1 w-full border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs" placeholder="Nama produk"></label><label class="text-[10px] uppercase text-zinc-500">Slug<input data-product-field="slug" data-index="${index}" value="${escapeHtml(product.slug)}" class="mt-1 w-full border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs" placeholder="slug-produk"></label><label class="text-[10px] uppercase text-zinc-500">URL gambar<input data-product-field="image" data-index="${index}" value="${escapeHtml(product.image)}" class="mt-1 w-full border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs" placeholder="https://..."></label><div class="flex gap-2 lg:col-span-4"><label class="text-[10px] uppercase text-zinc-500">Harga<input data-product-field="price" data-index="${index}" value="${escapeHtml(product.price)}" class="mt-1 w-32 border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs" placeholder="14000"></label><label class="text-[10px] uppercase text-zinc-500">Stok<input data-product-field="stock" data-index="${index}" value="${escapeHtml(product.stock)}" type="number" min="0" class="mt-1 w-24 border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs"></label><button data-product-save="${index}" class="mt-4 bg-amber-400 px-3 py-2 text-xs font-bold text-zinc-950">Simpan</button><button data-product-remove="${index}" class="mt-4 border border-red-500 px-3 py-2 text-xs text-red-300">Hapus</button></div></div>`).join('') : '<p class="border border-dashed border-zinc-700 p-6 text-center text-sm text-zinc-500">D1 belum berisi produk. Jalankan import katalog lama.</p>';
+    }
+
     function escapeHtml(value) { return String(value || '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char])); }
 
     async function loadDashboard() {
       try {
-        const [health, catalog, campaign] = await Promise.all([request(`${BACKEND_URL}/api/admin/health`), request(`${BACKEND_URL}/api/admin/catalog`), request(`${ADS_URL}/admin/ads`)]);
+        const [health, catalog, campaign, productData] = await Promise.all([request(`${BACKEND_URL}/api/admin/health`), request(`${BACKEND_URL}/api/admin/catalog`), request(`${ADS_URL}/admin/ads`), request(`${BACKEND_URL}/api/admin/products`)]);
         renderStats(health, catalog);
         ads = campaign.ads || [];
+        products = productData.products || [];
         $('#intervalInput').value = campaign.interval || 20;
         renderAds();
+        renderProducts();
         $('#systemStatus').textContent = `Terakhir diperiksa ${new Date(health.checkedAt).toLocaleString('id-ID')}. Campaign aktif: ${ads.length}.`;
       } catch (error) {
         $('#systemStatus').textContent = error.message;
@@ -140,6 +156,10 @@
     $('#adsList').addEventListener('input', (event) => { const index = event.target.dataset.index; const field = event.target.dataset.field; if (index !== undefined && field) ads[index][field] = event.target.value; });
     $('#adsList').addEventListener('click', (event) => { const index = event.target.dataset.remove; if (index !== undefined) { ads.splice(Number(index), 1); renderAds(); } });
     $('#saveAdsButton').addEventListener('click', async () => { $('#adsStatus').textContent = 'Menyimpan...'; try { const saved = await request(`${ADS_URL}/admin/ads`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ads, interval: Number($('#intervalInput').value) || 20 }) }); ads = saved.ads; renderAds(); $('#adsStatus').textContent = 'Campaign berhasil disimpan.'; } catch (error) { $('#adsStatus').textContent = error.message; } });
+    $('#importProductsButton').addEventListener('click', async () => { $('#productsStatus').textContent = 'Mengimpor katalog...'; try { const result = await request(`${BACKEND_URL}/api/admin/products/import`, { method: 'POST' }); products = result.products || []; renderProducts(); $('#productsStatus').textContent = `${result.imported} produk berhasil diimpor ke D1.`; } catch (error) { $('#productsStatus').textContent = error.message; } });
+    $('#addProductButton').addEventListener('click', () => { products.unshift({ title: '', slug: '', image: '', price: 0, stock: 0 }); renderProducts(); });
+    $('#productsList').addEventListener('input', (event) => { const index = event.target.dataset.index; const field = event.target.dataset.productField; if (index !== undefined && field) products[index][field] = event.target.value; });
+    $('#productsList').addEventListener('click', async (event) => { const saveIndex = event.target.dataset.productSave; const removeIndex = event.target.dataset.productRemove; try { if (saveIndex !== undefined) { const product = products[Number(saveIndex)]; const method = product.id ? 'PUT' : 'POST'; const url = product.id ? `${BACKEND_URL}/api/admin/products/${encodeURIComponent(product.slug)}` : `${BACKEND_URL}/api/admin/products`; const saved = await request(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(product) }); products[Number(saveIndex)] = saved.product; renderProducts(); $('#productsStatus').textContent = 'Produk tersimpan di D1.'; } else if (removeIndex !== undefined) { const product = products[Number(removeIndex)]; if (product.id) await request(`${BACKEND_URL}/api/admin/products/${encodeURIComponent(product.slug)}`, { method: 'DELETE' }); products.splice(Number(removeIndex), 1); renderProducts(); $('#productsStatus').textContent = 'Produk dihapus.'; } } catch (error) { $('#productsStatus').textContent = error.message; } });
 
     if (adminToken) { $('#tokenInput').value = adminToken; showDashboard(); }
   </script>

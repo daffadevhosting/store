@@ -586,7 +586,7 @@ Designed by DaffaDev
 
   <script>
     const BASE_URL = 'https://j-static-webshop.pages.dev';
-    const API_URL = `${BASE_URL}/data_products.json`;
+    const API_URL = 'https://plus62ai.warpzone.workers.dev/api/products';
     const CF_WORKER_AI_URL = 'https://plus62ai.warpzone.workers.dev/api/chat';
     
     const STORE_KNOWLEDGE = {
@@ -769,7 +769,7 @@ Designed by DaffaDev
         if (!response.ok) throw new Error('Kesalahan jaringan');
         
         const data = await response.json();
-        rawProducts = data.product || [];
+        rawProducts = Array.isArray(data) ? data : (data.product || []);
         displayedProducts = [...rawProducts];
         
         renderFilterChips();
